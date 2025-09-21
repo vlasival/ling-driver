@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&Ocy;&tcy;&chcy;&iocy;&tcy; &ocy; &rcy;&acy;&zcy;&rcy;&acy;&bcy;&ocy;&tcy;&kcy;&iecy; &rcy;&iecy;&pcy;&ocy;&zcy;&icy;&tcy;&ocy;&rcy;&icy;&yacy; &dcy;&lcy;&yacy; &rcy;&acy;&bcy;&ocy;&tcy;&ycy; &scy; &gcy;&rcy;&acy;&fcy;&ocy;&vcy;&ocy;&jcy; &bcy;&acy;&zcy;&ocy;&jcy; &dcy;&acy;&ncy;&ncy;&ycy;&khcy; Neo4j</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="отчёт-о-разработке-репозитория-для-работы-с-графовой-базой-данных-neo4j">Отчёт о разработке репозитория для работы с графовой базой данных Neo4j</h1>
+<h2 id="введение">Введение</h2>
+<p>В рамках данного проекта была разработана библиотека <code>GraphRepository</code> для работы с графовой базой данных Neo4j. Целью проекта являлось создание удобного, безопасного и надежного интерфейса для выполнения основных операций с узлами и связями в графовой базе данных.</p>
+<p>Графовые базы данных представляют собой специализированный тип NoSQL баз данных, которые оптимизированы для хранения и обработки связанных данных. Neo4j является одной из наиболее популярных графовых баз данных, использующей язык запросов Cypher для манипуляции данными.</p>
+<p>Разработанная библиотека предоставляет типизированный интерфейс для работы с Neo4j, включающий методы для создания, чтения, обновления и удаления узлов и связей, а также выполнения произвольных Cypher-запросов.</p>
+<h2 id="1-реализация-алгоритма">1. Реализация алгоритма</h2>
+<h3 id="11-архитектура-системы">1.1 Архитектура системы</h3>
+<p>Для реализации системы работы с графовой базой данных был разработан основной класс GraphRepository, приведенный на листинге 1.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GraphRepository</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, uri: <span class="hljs-built_in">str</span>, user: <span class="hljs-built_in">str</span>, password: <span class="hljs-built_in">str</span>, database: <span class="hljs-built_in">str</span> = <span class="hljs-literal">None</span></span>):
+        self.uri = uri
+        self.user = user
+        self.password = password
+        self.database = database
+        self.driver = GraphDatabase.driver(self.uri, auth=(self.user, self.password))
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__enter__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> self
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__exit__</span>(<span class="hljs-params">self, exc_type, exc_val, exc_tb</span>):
+        self.close()
+</code></pre>
+<p>Листинг 1 – Класс GraphRepository</p>
+<p>При инициализации создается драйвер для подключения к Neo4j и настраивается контекстный менеджер для автоматического управления ресурсами.</p>
+<h3 id="12-реализация-методов-получения-данных">1.2 Реализация методов получения данных</h3>
+<h4 id="121-метод-получения-всех-узлов">1.2.1 Метод получения всех узлов</h4>
+<p>Для получения всех узлов графа был реализован метод get_all_nodes(), приведенный на листинге 2.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_all_nodes</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">List</span>[TNode]:
+    query = <span class="hljs-string">&quot;&quot;&quot;
+    MATCH (n)
+    RETURN elementId(n) as element_id, n.uri as uri, n.description as description, n.title as title
+    &quot;&quot;&quot;</span>
+    results = self._execute_query(query)
+    <span class="hljs-keyword">return</span> [self.collect_node(result) <span class="hljs-keyword">for</span> result <span class="hljs-keyword">in</span> results]
+</code></pre>
+<p>Листинг 2 – Метод get_all_nodes()</p>
+<p>Выполняет Cypher-запрос для получения всех узлов и преобразует результаты в типизированные объекты TNode.</p>
+<h4 id="122-метод-получения-узлов-с-их-связями">1.2.2 Метод получения узлов с их связями</h4>
+<p>Для получения всех узлов вместе с их исходящими связями был реализован метод get_all_nodes_and_arcs(), приведенный на листинге 3.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_all_nodes_and_arcs</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-type">List</span>[TNode]:
+    query = <span class="hljs-string">&quot;&quot;&quot;
+    MATCH (n)
+    OPTIONAL MATCH (n)-[r]-&gt;(m)
+    WITH n, collect({
+        element_id: elementId(r),
+        uri: type(r),
+        node_uri_from: n.uri,
+        node_uri_to: m.uri
+    }) as arcs
+    RETURN elementId(n) as element_id, n.uri as uri, n.description as description, n.title as title, arcs
+    &quot;&quot;&quot;</span>
+    results = self._execute_query(query)
+    nodes = []
+    <span class="hljs-keyword">for</span> result <span class="hljs-keyword">in</span> results:
+        node = self.collect_node(result)
+        node.arcs = [self.collect_arc(arc) <span class="hljs-keyword">for</span> arc <span class="hljs-keyword">in</span> result.get(<span class="hljs-string">&#x27;arcs&#x27;</span>, []) <span class="hljs-keyword">if</span> arc.get(<span class="hljs-string">&#x27;element_id&#x27;</span>)]
+        nodes.append(node)
+    <span class="hljs-keyword">return</span> nodes
+</code></pre>
+<p>Листинг 3 – Метод get_all_nodes_and_arcs()</p>
+<p>Использует OPTIONAL MATCH для включения узлов без связей и агрегирует связи с помощью функции collect().</p>
+<h4 id="123-метод-получения-узлов-по-меткам">1.2.3 Метод получения узлов по меткам</h4>
+<p>Для получения узлов по определенным меткам был реализован метод get_nodes_by_labels(), приведенный на листинге 4.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_nodes_by_labels</span>(<span class="hljs-params">self, labels: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]</span>) -&gt; <span class="hljs-type">List</span>[TNode]:
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> labels:
+        <span class="hljs-keyword">return</span> []
+    
+    labels_clause = self._build_labels_clause(labels)
+    query = <span class="hljs-string">f&quot;&quot;&quot;
+    MATCH (n<span class="hljs-subst">{labels_clause}</span>)
+    RETURN elementId(n) as element_id, n.uri as uri, n.description as description, n.title as title
+    &quot;&quot;&quot;</span>
+    results = self._execute_query(query)
+    <span class="hljs-keyword">return</span> [self.collect_node(result) <span class="hljs-keyword">for</span> result <span class="hljs-keyword">in</span> results]
+</code></pre>
+<p>Листинг 4 – Метод get_nodes_by_labels()</p>
+<p>Безопасно строит строку меток и выполняет запрос для получения узлов с указанными метками.</p>
+<h3 id="13-реализация-методов-создания-данных">1.3 Реализация методов создания данных</h3>
+<h4 id="131-метод-создания-узла">1.3.1 Метод создания узла</h4>
+<p>Для создания нового узла в графе был реализован метод create_node(), приведенный на листинге 5.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_node</span>(<span class="hljs-params">self, params: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]</span>) -&gt; TNode:
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;uri&#x27;</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> params:
+        params[<span class="hljs-string">&#x27;uri&#x27;</span>] = <span class="hljs-string">f&quot;node_<span class="hljs-subst">{self.generate_random_string()}</span>&quot;</span>
+    
+    labels = params.pop(<span class="hljs-string">&#x27;labels&#x27;</span>, [])
+    labels_clause = self._build_labels_clause(labels)
+    
+    query = <span class="hljs-string">f&quot;&quot;&quot;
+    CREATE (n<span class="hljs-subst">{labels_clause}</span> $props)
+    RETURN elementId(n) as element_id, n.uri as uri, n.description as description, n.title as title
+    &quot;&quot;&quot;</span>
+    
+    results = self._execute_query(query, {<span class="hljs-string">&#x27;props&#x27;</span>: params})
+    <span class="hljs-keyword">if</span> results:
+        <span class="hljs-keyword">return</span> self.collect_node(results[<span class="hljs-number">0</span>])
+    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;Не удалось создать узел&quot;</span>)
+</code></pre>
+<p>Листинг 5 – Метод create_node()</p>
+<p>Генерирует URI, строит безопасную строку меток и создает узел с использованием параметризованного запроса.</p>
+<h4 id="132-метод-создания-связи">1.3.2 Метод создания связи</h4>
+<p>Для создания связи между узлами был реализован метод create_arc(), приведенный на листинге 6.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_arc</span>(<span class="hljs-params">self, node1_uri: <span class="hljs-built_in">str</span>, node2_uri: <span class="hljs-built_in">str</span>, arc_type: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;RELATES_TO&quot;</span>, properties: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>] = <span class="hljs-literal">None</span></span>) -&gt; TArc:
+    safe_arc_type = arc_type.replace(<span class="hljs-string">&#x27;`&#x27;</span>, <span class="hljs-string">&#x27;``&#x27;</span>)
+    
+    query = <span class="hljs-string">f&quot;&quot;&quot;
+    MATCH (n1 {{uri: $node1_uri}}), (n2 {{uri: $node2_uri}})
+    CREATE (n1)-[r:`<span class="hljs-subst">{safe_arc_type}</span>` $props]-&gt;(n2)
+    RETURN elementId(r) as element_id, type(r) as uri, n1.uri as node_uri_from, n2.uri as node_uri_to
+    &quot;&quot;&quot;</span>
+    
+    results = self._execute_query(query, {
+        <span class="hljs-string">&#x27;node1_uri&#x27;</span>: node1_uri,
+        <span class="hljs-string">&#x27;node2_uri&#x27;</span>: node2_uri,
+        <span class="hljs-string">&#x27;props&#x27;</span>: properties <span class="hljs-keyword">or</span> {}
+    })
+    
+    <span class="hljs-keyword">if</span> results:
+        <span class="hljs-keyword">return</span> self.collect_arc(results[<span class="hljs-number">0</span>])
+    <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;Не удалось создать связь&quot;</span>)
+</code></pre>
+<p>Листинг 6 – Метод create_arc()</p>
+<p>Безопасно экранирует тип связи, находит узлы по URI и создает связь между ними.</p>
+<h3 id="14-реализация-методов-обновления-и-удаления">1.4 Реализация методов обновления и удаления</h3>
+<h4 id="141-метод-обновления-узла">1.4.1 Метод обновления узла</h4>
+<p>Для обновления свойств существующего узла был реализован метод update_node(), приведенный на листинге 7.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">update_node</span>(<span class="hljs-params">self, uri: <span class="hljs-built_in">str</span>, params: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]</span>) -&gt; <span class="hljs-type">Optional</span>[TNode]:
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    
+    query = <span class="hljs-string">&quot;&quot;&quot;
+    MATCH (n {uri: $uri})
+    SET n += $props
+    RETURN elementId(n) as element_id, n.uri as uri, n.description as description, n.title as title
+    &quot;&quot;&quot;</span>
+    
+    results = self._execute_query(query, {<span class="hljs-string">&#x27;uri&#x27;</span>: uri, <span class="hljs-string">&#x27;props&#x27;</span>: params})
+    <span class="hljs-keyword">if</span> results:
+        <span class="hljs-keyword">return</span> self.collect_node(results[<span class="hljs-number">0</span>])
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+</code></pre>
+<p>Листинг 7 – Метод update_node()</p>
+<p>Находит узел по URI и обновляет его свойства с помощью оператора SET.</p>
+<h4 id="142-метод-удаления-узла">1.4.2 Метод удаления узла</h4>
+<p>Для удаления узла из графа был реализован метод delete_node_by_uri(), приведенный на листинге 8.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">delete_node_by_uri</span>(<span class="hljs-params">self, uri: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    query = <span class="hljs-string">&quot;&quot;&quot;
+    MATCH (n {uri: $uri})
+    DETACH DELETE n
+    &quot;&quot;&quot;</span>
+    
+    <span class="hljs-keyword">with</span> self.driver.session(database=self.database) <span class="hljs-keyword">as</span> session:
+        result = session.run(query, {<span class="hljs-string">&#x27;uri&#x27;</span>: uri})
+        summary = result.consume()
+        <span class="hljs-keyword">return</span> summary.counters.nodes_deleted &gt; <span class="hljs-number">0</span>
+</code></pre>
+<p>Листинг 8 – Метод delete_node_by_uri()</p>
+<p>Удаляет узел вместе со всеми его связями и проверяет успешность операции через статистику выполнения.</p>
+<h3 id="15-обеспечение-безопасности">1.5 Обеспечение безопасности</h3>
+<h4 id="151-метод-безопасного-построения-меток">1.5.1 Метод безопасного построения меток</h4>
+<p>Для защиты от Cypher Injection атак был реализован метод _build_labels_clause(), приведенный на листинге 9.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_build_labels_clause</span>(<span class="hljs-params">self, labels: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]</span>) -&gt; <span class="hljs-built_in">str</span>:
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> labels:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>
+    escaped_labels = [<span class="hljs-string">f&quot;`<span class="hljs-subst">{label.replace(<span class="hljs-string">&#x27;`&#x27;</span>, <span class="hljs-string">&#x27;``&#x27;</span>)}</span>`&quot;</span> <span class="hljs-keyword">for</span> label <span class="hljs-keyword">in</span> labels]
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;:&#x27;</span> + <span class="hljs-string">&#x27;:&#x27;</span>.join(escaped_labels)
+</code></pre>
+<p>Листинг 9 – Метод _build_labels_clause()</p>
+<p>Безопасно экранирует метки узлов с помощью обратных кавычек для предотвращения инъекций.</p>
+<h4 id="152-метод-выполнения-запросов">1.5.2 Метод выполнения запросов</h4>
+<p>Для безопасного выполнения запросов к базе данных был реализован метод _execute_query(), приведенный на листинге 10.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_execute_query</span>(<span class="hljs-params">self, query: <span class="hljs-built_in">str</span>, parameters: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>] = <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]]:
+    <span class="hljs-keyword">with</span> self.driver.session(database=self.database) <span class="hljs-keyword">as</span> session:
+        result = session.run(query, parameters <span class="hljs-keyword">or</span> {})
+        <span class="hljs-keyword">return</span> [record.data() <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> result]
+</code></pre>
+<p>Листинг 10 – Метод _execute_query()</p>
+<p>Выполняет параметризованный запрос к базе данных и возвращает результаты в виде списка словарей.</p>
+<h3 id="16-типизация-данных">1.6 Типизация данных</h3>
+<h4 id="161-структура-узла">1.6.1 Структура узла</h4>
+<p>Для типизации узлов графа была создана структура TNode, приведенная на листинге 11.</p>
+<pre><code class="language-python"><span class="hljs-meta">@dataclass</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TNode</span>:
+    <span class="hljs-built_in">id</span>: <span class="hljs-built_in">str</span>  <span class="hljs-comment"># element ID (стабильный)</span>
+    uri: <span class="hljs-built_in">str</span>
+    description: <span class="hljs-built_in">str</span>
+    title: <span class="hljs-built_in">str</span>
+    arcs: <span class="hljs-type">Optional</span>[<span class="hljs-type">List</span>[<span class="hljs-string">&#x27;TArc&#x27;</span>]] = <span class="hljs-literal">None</span>
+</code></pre>
+<p>Листинг 11 – Структура TNode</p>
+<p>Типизированное представление узла графа с использованием стабильного element ID и основных свойств.</p>
+<h4 id="162-структура-связи">1.6.2 Структура связи</h4>
+<p>Для типизации связей графа была создана структура TArc, приведенная на листинге 12.</p>
+<pre><code class="language-python"><span class="hljs-meta">@dataclass</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TArc</span>:
+    <span class="hljs-built_in">id</span>: <span class="hljs-built_in">str</span>  <span class="hljs-comment"># element ID (стабильный)</span>
+    uri: <span class="hljs-built_in">str</span>  <span class="hljs-comment"># arc.type</span>
+    node_uri_from: <span class="hljs-built_in">str</span>
+    node_uri_to: <span class="hljs-built_in">str</span>
+</code></pre>
+<p>Листинг 12 – Структура TArc</p>
+<p>Типизированное представление связи графа с использованием стабильного element ID и URI узлов-участников.</p>
+<h3 id="17-вспомогательные-методы">1.7 Вспомогательные методы</h3>
+<h4 id="171-метод-генерации-случайных-строк">1.7.1 Метод генерации случайных строк</h4>
+<p>Для генерации уникальных URI узлов был реализован метод generate_random_string(), приведенный на листинге 13.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">generate_random_string</span>(<span class="hljs-params">self, length: <span class="hljs-built_in">int</span> = <span class="hljs-number">10</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+    letters = string.ascii_lowercase + string.digits
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(random.choice(letters) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length))
+</code></pre>
+<p>Листинг 13 – Метод generate_random_string()</p>
+<p>Генерирует случайную строку заданной длины из букв и цифр для создания уникальных URI узлов.</p>
+<h4 id="172-метод-выполнения-произвольных-запросов">1.7.2 Метод выполнения произвольных запросов</h4>
+<p>Для выполнения пользовательских Cypher-запросов был реализован метод run_custom_query(), приведенный на листинге 14.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">run_custom_query</span>(<span class="hljs-params">self, query: <span class="hljs-built_in">str</span>, parameters: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>] = <span class="hljs-literal">None</span></span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]]:
+    <span class="hljs-keyword">return</span> self._execute_query(query, parameters)
+</code></pre>
+<p>Листинг 14 – Метод run_custom_query()</p>
+<p>Делегирует выполнение произвольного Cypher-запроса к базовому методу _execute_query().</p>
+<h2 id="заключение">Заключение</h2>
+<p>В рамках данного проекта была успешно разработана библиотека <code>GraphRepository</code> для работы с графовой базой данных Neo4j. Основные достижения проекта:</p>
+<ol>
+<li><strong>Создан безопасный и надежный интерфейс</strong> для работы с Neo4j, защищенный от атак типа Cypher Injection</li>
+<li><strong>Реализованы все основные операции</strong> CRUD для узлов и связей графа</li>
+<li><strong>Обеспечена типизация данных</strong> с помощью современных возможностей Python</li>
+<li><strong>Использованы стабильные идентификаторы</strong> elementId() вместо внутренних ID</li>
+<li><strong>Реализована защита от инъекций</strong> через параметризованные запросы</li>
+</ol>
+<p>Библиотека готова к использованию в продакшене и может служить основой для более сложных систем, работающих с графовыми данными. Архитектура системы позволяет легко расширять функциональность и адаптировать под различные бизнес-требования.</p>
+<h2 id="список-литературы">Список литературы</h2>
+<ol>
+<li>Neo4j Documentation. [Электронный ресурс]. URL: <a href="https://neo4j.com/docs/">https://neo4j.com/docs/</a></li>
+<li>Cypher Query Language Reference. [Электронный ресурс]. URL: <a href="https://neo4j.com/docs/cypher-manual/">https://neo4j.com/docs/cypher-manual/</a></li>
+<li>Python Neo4j Driver Documentation. [Электронный ресурс]. URL: <a href="https://neo4j.com/docs/python-manual/">https://neo4j.com/docs/python-manual/</a></li>
+<li>Graph Databases: New Opportunities for Connected Data / Ian Robinson, Jim Webber, Emil Eifrem. - O'Reilly Media, 2015</li>
+<li>Python Dataclasses Documentation. [Электронный ресурс]. URL: <a href="https://docs.python.org/3/library/dataclasses.html">https://docs.python.org/3/library/dataclasses.html</a></li>
+<li>SQL Injection Prevention Cheat Sheet. [Электронный ресурс]. URL: <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html</a></li>
+</ol>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>
