@@ -208,8 +208,8 @@ class GraphRepository:
             Узел или None, если не найден
         """
         query = """
-        MATCH (n {uri: $uri})
-        RETURN elementId(n) as element_id, n.uri as uri, n.description as description, n.title as title
+            MATCH (n {uri: $uri})
+            RETURN elementId(n) as element_id, n.uri as uri, n.description as description, n.title as title
         """
         results = self._execute_query(query, {'uri': uri})
         if results:
