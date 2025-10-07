@@ -1,0 +1,389 @@
+{% extends 'base.html' %}
+
+{% block title %}Онтология - Text Corpus Management{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2> Управление онтологией</h2>
+    <p>Работа с онтологическими данными в Neo4j</p>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3> Создать класс</h3>
+        <form onsubmit="createClass(event)">
+            <div class="form-group">
+                <label for="class-title">Название класса:</label>
+                <input type="text" id="class-title" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="class-description">Описание:</label>
+                <textarea id="class-description" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="class-parent">URI родительского класса (опционально):</label>
+                <input type="text" id="class-parent" class="form-control" placeholder="http://example.org/Class">
+            </div>
+            <button type="submit" class="btn btn-success">Создать класс</button>
+        </form>
+        <div id="create-class-result" class="result"></div>
+    </div>
+    
+    <div class="card">
+        <h3> Поиск класса</h3>
+        <form onsubmit="searchClass(event)">
+            <div class="form-group">
+                <label for="search-class-uri">URI класса:</label>
+                <input type="text" id="search-class-uri" class="form-control" placeholder="http://example.org/Class">
+            </div>
+            <button type="submit" class="btn btn-primary">Найти класс</button>
+        </form>
+        <div id="search-class-result" class="result"></div>
+    </div>
+</div>
+
+<div class="section">
+    <h2> Список узлов онтологии</h2>
+    <button onclick="loadOntology()" class="btn btn-secondary">Обновить список</button>
+    <div id="ontology-list">
+        <p>Загрузка онтологии...</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2> Иерархия классов</h2>
+    <form onsubmit="getParentClasses(event)">
+        <div class="form-group">
+            <label for="parent-class-uri">URI класса для просмотра иерархии:</label>
+            <input type="text" id="parent-class-uri" class="form-control" placeholder="http://example.org/Class">
+        </div>
+        <button type="submit" class="btn btn-primary">Показать иерархию</button>
+    </form>
+    <div id="hierarchy-result" class="result"></div>
+</div>
+
+<div class="section">
+    <h2> Подпись класса</h2>
+    <form onsubmit="getClassSignature(event)">
+        <div class="form-group">
+            <label for="signature-class-uri">URI класса для получения подписи:</label>
+            <input type="text" id="signature-class-uri" class="form-control" placeholder="http://example.org/Class">
+        </div>
+        <button type="submit" class="btn btn-primary">Получить подпись</button>
+    </form>
+    <div id="signature-result" class="result"></div>
+</div>
+
+<div class="section">
+    <h2> Управление объектами</h2>
+    <div class="grid">
+        <div class="card">
+            <h3> Создать объект</h3>
+            <form onsubmit="createObject(event)">
+                <div class="form-group">
+                    <label for="object-uri">URI объекта:</label>
+                    <input type="text" id="object-uri" class="form-control" required placeholder="http://example.org/Object">
+                </div>
+                <div class="form-group">
+                    <label for="object-class-uri">URI класса:</label>
+                    <input type="text" id="object-class-uri" class="form-control" required placeholder="http://example.org/Class">
+                </div>
+                <button type="submit" class="btn btn-success">Создать объект</button>
+            </form>
+            <div id="create-object-result" class="result"></div>
+        </div>
+        
+        <div class="card">
+            <h3> Найти объект</h3>
+            <form onsubmit="searchObject(event)">
+                <div class="form-group">
+                    <label for="search-object-uri">URI объекта:</label>
+                    <input type="text" id="search-object-uri" class="form-control" placeholder="http://example.org/Object">
+                </div>
+                <button type="submit" class="btn btn-primary">Найти объект</button>
+            </form>
+            <div id="search-object-result" class="result"></div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2> Управление свойствами</h2>
+    <div class="grid">
+        <div class="card">
+            <h3> Создать DatatypeProperty</h3>
+            <form onsubmit="createDatatypeProperty(event)">
+                <div class="form-group">
+                    <label for="dtp-uri">URI свойства:</label>
+                    <input type="text" id="dtp-uri" class="form-control" required placeholder="http://example.org/hasName">
+                </div>
+                <div class="form-group">
+                    <label for="dtp-domain">URI домена:</label>
+                    <input type="text" id="dtp-domain" class="form-control" required placeholder="http://example.org/Class">
+                </div>
+                <div class="form-group">
+                    <label for="dtp-range">Тип данных:</label>
+                    <input type="text" id="dtp-range" class="form-control" required placeholder="string">
+                </div>
+                <button type="submit" class="btn btn-success">Создать свойство</button>
+            </form>
+            <div id="create-dtp-result" class="result"></div>
+        </div>
+        
+        <div class="card">
+            <h3> Создать ObjectProperty</h3>
+            <form onsubmit="createObjectProperty(event)">
+                <div class="form-group">
+                    <label for="op-uri">URI свойства:</label>
+                    <input type="text" id="op-uri" class="form-control" required placeholder="http://example.org/hasPart">
+                </div>
+                <div class="form-group">
+                    <label for="op-domain">URI домена:</label>
+                    <input type="text" id="op-domain" class="form-control" required placeholder="http://example.org/Class1">
+                </div>
+                <div class="form-group">
+                    <label for="op-range">URI области значений:</label>
+                    <input type="text" id="op-range" class="form-control" required placeholder="http://example.org/Class2">
+                </div>
+                <button type="submit" class="btn btn-success">Создать свойство</button>
+            </form>
+            <div id="create-op-result" class="result"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Загрузка онтологии при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        loadOntology();
+    });
+    
+    async function loadOntology() {
+        try {
+            const result = await makeRequest('/api/ontology/');
+            
+            if (result.success) {
+                displayOntology(result.data);
+            } else {
+                document.getElementById('ontology-list').innerHTML = 
+                    '<p class="status offline">Ошибка загрузки онтологии. Проверьте подключение к Neo4j.</p>';
+            }
+        } catch (error) {
+            document.getElementById('ontology-list').innerHTML = 
+                '<p class="status offline">Ошибка: ' + error.message + '</p>';
+        }
+    }
+    
+    function displayOntology(nodes) {
+        const listDiv = document.getElementById('ontology-list');
+        
+        if (nodes.length === 0) {
+            listDiv.innerHTML = '<p>Узлы онтологии не найдены</p>';
+            return;
+        }
+        
+        let html = '<div class="grid">';
+        
+        nodes.forEach(node => {
+            const nodeType = node.title ? 'Класс' : 'Объект';
+            const title = node.title || node.uri;
+            
+            html += '<div class="card">';
+            html += `<h3>${nodeType}: ${title}</h3>`;
+            html += `<p><strong>URI:</strong> ${node.uri}</p>`;
+            if (node.description) {
+                html += `<p><strong>Описание:</strong> ${node.description}</p>`;
+            }
+            if (node.parent_uri) {
+                html += `<p><strong>Родитель:</strong> ${node.parent_uri}</p>`;
+            }
+            html += '</div>';
+        });
+        
+        html += '</div>';
+        listDiv.innerHTML = html;
+    }
+    
+    async function createClass(event) {
+        event.preventDefault();
+        clearResult('create-class-result');
+        
+        const data = {
+            title: document.getElementById('class-title').value,
+            description: document.getElementById('class-description').value
+        };
+        
+        const parentUri = document.getElementById('class-parent').value;
+        if (parentUri) {
+            data.parent_uri = parentUri;
+        }
+        
+        try {
+            const result = await makeRequest('/api/ontology/create_class/', 'POST', data);
+            showResult('create-class-result', result, result.success);
+            
+            if (result.success) {
+                // Очищаем форму
+                document.getElementById('class-title').value = '';
+                document.getElementById('class-description').value = '';
+                document.getElementById('class-parent').value = '';
+                // Обновляем список
+                loadOntology();
+            }
+        } catch (error) {
+            showResult('create-class-result', {error: error.message}, false);
+        }
+    }
+    
+    async function searchClass(event) {
+        event.preventDefault();
+        clearResult('search-class-result');
+        
+        const uri = document.getElementById('search-class-uri').value;
+        if (!uri) {
+            showResult('search-class-result', {error: 'Введите URI класса'}, false);
+            return;
+        }
+        
+        try {
+            const result = await makeRequest(`/api/ontology/get_class/?uri=${encodeURIComponent(uri)}`);
+            showResult('search-class-result', result, result.success);
+        } catch (error) {
+            showResult('search-class-result', {error: error.message}, false);
+        }
+    }
+    
+    async function getParentClasses(event) {
+        event.preventDefault();
+        clearResult('hierarchy-result');
+        
+        const uri = document.getElementById('parent-class-uri').value;
+        if (!uri) {
+            showResult('hierarchy-result', {error: 'Введите URI класса'}, false);
+            return;
+        }
+        
+        try {
+            const result = await makeRequest(`/api/ontology/get_parent_classes/?uri=${encodeURIComponent(uri)}`);
+            showResult('hierarchy-result', result, result.success);
+        } catch (error) {
+            showResult('hierarchy-result', {error: error.message}, false);
+        }
+    }
+    
+    async function getClassSignature(event) {
+        event.preventDefault();
+        clearResult('signature-result');
+        
+        const uri = document.getElementById('signature-class-uri').value;
+        if (!uri) {
+            showResult('signature-result', {error: 'Введите URI класса'}, false);
+            return;
+        }
+        
+        try {
+            const result = await makeRequest(`/api/ontology/collect_signature/?uri=${encodeURIComponent(uri)}`);
+            showResult('signature-result', result, result.success);
+        } catch (error) {
+            showResult('signature-result', {error: error.message}, false);
+        }
+    }
+    
+    async function createObject(event) {
+        event.preventDefault();
+        clearResult('create-object-result');
+        
+        const data = {
+            uri: document.getElementById('object-uri').value,
+            class_uri: document.getElementById('object-class-uri').value
+        };
+        
+        try {
+            const result = await makeRequest('/api/ontology/create_object/', 'POST', data);
+            showResult('create-object-result', result, result.success);
+            
+            if (result.success) {
+                // Очищаем форму
+                document.getElementById('object-uri').value = '';
+                document.getElementById('object-class-uri').value = '';
+                // Обновляем список
+                loadOntology();
+            }
+        } catch (error) {
+            showResult('create-object-result', {error: error.message}, false);
+        }
+    }
+    
+    async function searchObject(event) {
+        event.preventDefault();
+        clearResult('search-object-result');
+        
+        const uri = document.getElementById('search-object-uri').value;
+        if (!uri) {
+            showResult('search-object-result', {error: 'Введите URI объекта'}, false);
+            return;
+        }
+        
+        try {
+            const result = await makeRequest(`/api/ontology/get_object/?uri=${encodeURIComponent(uri)}`);
+            showResult('search-object-result', result, result.success);
+        } catch (error) {
+            showResult('search-object-result', {error: error.message}, false);
+        }
+    }
+    
+    async function createDatatypeProperty(event) {
+        event.preventDefault();
+        clearResult('create-dtp-result');
+        
+        const data = {
+            uri: document.getElementById('dtp-uri').value,
+            domain_uri: document.getElementById('dtp-domain').value,
+            range_type: document.getElementById('dtp-range').value
+        };
+        
+        try {
+            const result = await makeRequest('/api/ontology/create_datatype_property/', 'POST', data);
+            showResult('create-dtp-result', result, result.success);
+            
+            if (result.success) {
+                // Очищаем форму
+                document.getElementById('dtp-uri').value = '';
+                document.getElementById('dtp-domain').value = '';
+                document.getElementById('dtp-range').value = '';
+                // Обновляем список
+                loadOntology();
+            }
+        } catch (error) {
+            showResult('create-dtp-result', {error: error.message}, false);
+        }
+    }
+    
+    async function createObjectProperty(event) {
+        event.preventDefault();
+        clearResult('create-op-result');
+        
+        const data = {
+            uri: document.getElementById('op-uri').value,
+            domain_uri: document.getElementById('op-domain').value,
+            range_uri: document.getElementById('op-range').value
+        };
+        
+        try {
+            const result = await makeRequest('/api/ontology/create_object_property/', 'POST', data);
+            showResult('create-op-result', result, result.success);
+            
+            if (result.success) {
+                // Очищаем форму
+                document.getElementById('op-uri').value = '';
+                document.getElementById('op-domain').value = '';
+                document.getElementById('op-range').value = '';
+                // Обновляем список
+                loadOntology();
+            }
+        } catch (error) {
+            showResult('create-op-result', {error: error.message}, false);
+        }
+    }
+</script>
+{% endblock %}

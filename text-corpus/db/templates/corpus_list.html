@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}Корпуса - Text Corpus Management{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2> Управление корпусами</h2>
+    <p>Создание, редактирование и управление корпусами текстов</p>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3> Создать корпус</h3>
+        <form onsubmit="createCorpus(event)">
+            <div class="form-group">
+                <label for="corpus-name">Название:</label>
+                <input type="text" id="corpus-name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="corpus-description">Описание:</label>
+                <textarea id="corpus-description" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="corpus-genre">Жанр:</label>
+                <input type="text" id="corpus-genre" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Создать корпус</button>
+        </form>
+        <div id="create-result" class="result"></div>
+    </div>
+    
+    <div class="card">
+        <h3> Поиск корпуса</h3>
+        <form onsubmit="searchCorpus(event)">
+            <div class="form-group">
+                <label for="search-id">ID корпуса:</label>
+                <input type="number" id="search-id" class="form-control" placeholder="Введите ID">
+            </div>
+            <button type="submit" class="btn btn-primary">Найти корпус</button>
+        </form>
+        <div id="search-result" class="result"></div>
+    </div>
+</div>
+
+<div class="section">
+    <h2> Список корпусов</h2>
+    <button onclick="loadCorpora()" class="btn btn-secondary">Обновить список</button>
+    <div id="corpora-list">
+        <p>Загрузка корпусов...</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2> Редактирование корпуса</h2>
+    <form onsubmit="updateCorpus(event)">
+        <div class="form-group">
+            <label for="update-id">ID корпуса для редактирования:</label>
+            <input type="number" id="update-id" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="update-name">Новое название:</label>
+            <input type="text" id="update-name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="update-description">Новое описание:</label>
+            <textarea id="update-description" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="update-genre">Новый жанр:</label>
+            <input type="text" id="update-genre" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Обновить корпус</button>
+    </form>
+    <div id="update-result" class="result"></div>
+</div>
+
+<div class="section">
+    <h2> Удаление корпуса</h2>
+    <form onsubmit="deleteCorpus(event)">
+        <div class="form-group">
+            <label for="delete-id">ID корпуса для удаления:</label>
+            <input type="number" id="delete-id" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-danger">Удалить корпус</button>
+    </form>
+    <div id="delete-result" class="result"></div>
+</div>
+
+<script>
+    // Загрузка корпусов при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCorpora();
+    });
+    
+    async function loadCorpora() {
+        try {
+            const result = await makeRequest('/api/corpus/');
+            
+            if (result.success) {
+                displayCorpora(result.data);
+            } else {
+                document.getElementById('corpora-list').innerHTML = 
+                    '<p class="status offline">Ошибка загрузки корпусов</p>';
+            }
+        } catch (error) {
+            document.getElementById('corpora-list').innerHTML = 
+                '<p class="status offline">Ошибка: ' + error.message + '</p>';
+        }
+    }
+    
+    function displayCorpora(corpora) {
+        const listDiv = document.getElementById('corpora-list');
+        
+        if (corpora.length === 0) {
+            listDiv.innerHTML = '<p>Корпусы не найдены</p>';
+            return;
+        }
+        
+        let html = '<div class="grid">';
+        
+        corpora.forEach(corpus => {
+            html += '<div class="card">';
+            html += `<h3>${corpus.name}</h3>`;
+            html += `<p><strong>ID:</strong> ${corpus.id}</p>`;
+            html += `<p><strong>Описание:</strong> ${corpus.description || 'Не указано'}</p>`;
+            html += `<p><strong>Жанр:</strong> ${corpus.genre || 'Не указан'}</p>`;
+            html += `<p><strong>Текстов:</strong> ${corpus.texts_count}</p>`;
+            html += `<p><strong>Создан:</strong> ${new Date(corpus.created_at).toLocaleString('ru-RU')}</p>`;
+            html += `<button onclick="viewCorpusWithTexts(${corpus.id})" class="btn btn-primary">Просмотреть с текстами</button>`;
+            html += '</div>';
+        });
+        
+        html += '</div>';
+        listDiv.innerHTML = html;
+    }
+    
+    async function createCorpus(event) {
+        event.preventDefault();
+        clearResult('create-result');
+        
+        const data = {
+            name: document.getElementById('corpus-name').value,
+            description: document.getElementById('corpus-description').value,
+            genre: document.getElementById('corpus-genre').value
+        };
+        
+        try {
+            const result = await makeRequest('/api/corpus/create/', 'POST', data);
+            showResult('create-result', result, result.success);
+            
+            if (result.success) {
+                // Очищаем форму
+                document.getElementById('corpus-name').value = '';
+                document.getElementById('corpus-description').value = '';
+                document.getElementById('corpus-genre').value = '';
+                // Обновляем список
+                loadCorpora();
+            }
+        } catch (error) {
+            showResult('create-result', {error: error.message}, false);
+        }
+    }
+    
+    async function searchCorpus(event) {
+        event.preventDefault();
+        clearResult('search-result');
+        
+        const id = document.getElementById('search-id').value;
+        if (!id) {
+            showResult('search-result', {error: 'Введите ID корпуса'}, false);
+            return;
+        }
+        
+        try {
+            const result = await makeRequest(`/api/corpus/get/?id=${id}`);
+            showResult('search-result', result, result.success);
+        } catch (error) {
+            showResult('search-result', {error: error.message}, false);
+        }
+    }
+    
+    async function updateCorpus(event) {
+        event.preventDefault();
+        clearResult('update-result');
+        
+        const id = document.getElementById('update-id').value;
+        const data = {};
+        
+        const name = document.getElementById('update-name').value;
+        const description = document.getElementById('update-description').value;
+        const genre = document.getElementById('update-genre').value;
+        
+        if (name) data.name = name;
+        if (description) data.description = description;
+        if (genre) data.genre = genre;
+        
+        if (Object.keys(data).length === 0) {
+            showResult('update-result', {error: 'Заполните хотя бы одно поле для обновления'}, false);
+            return;
+        }
+        
+        try {
+            const result = await makeRequest(`/api/corpus/update/?id=${id}`, 'PUT', data);
+            showResult('update-result', result, result.success);
+            
+            if (result.success) {
+                loadCorpora();
+            }
+        } catch (error) {
+            showResult('update-result', {error: error.message}, false);
+        }
+    }
+    
+    async function deleteCorpus(event) {
+        event.preventDefault();
+        clearResult('delete-result');
+        
+        const id = document.getElementById('delete-id').value;
+        
+        if (!confirm(`Вы уверены, что хотите удалить корпус с ID ${id}?`)) {
+            return;
+        }
+        
+        try {
+            const result = await makeRequest(`/api/corpus/delete/?id=${id}`, 'DELETE');
+            showResult('delete-result', result, result.success);
+            
+            if (result.success) {
+                loadCorpora();
+            }
+        } catch (error) {
+            showResult('delete-result', {error: error.message}, false);
+        }
+    }
+    
+    async function viewCorpusWithTexts(corpusId) {
+        try {
+            const result = await makeRequest(`/api/corpus/get_with_texts/?id=${corpusId}`);
+            
+            if (result.success) {
+                const corpus = result.data;
+                let html = `<h3>${corpus.name} (с текстами)</h3>`;
+                html += `<p><strong>Описание:</strong> ${corpus.description}</p>`;
+                html += `<p><strong>Жанр:</strong> ${corpus.genre}</p>`;
+                html += `<p><strong>Текстов:</strong> ${corpus.texts_count}</p>`;
+                
+                if (corpus.texts && corpus.texts.length > 0) {
+                    html += '<h4>Тексты:</h4><ul>';
+                    corpus.texts.forEach(text => {
+                        html += `<li><strong>${text.name}</strong> - ${text.text_preview}</li>`;
+                    });
+                    html += '</ul>';
+                } else {
+                    html += '<p>Тексты не найдены</p>';
+                }
+                
+                showResult('search-result', {corpus: html}, true);
+            } else {
+                showResult('search-result', result, false);
+            }
+        } catch (error) {
+            showResult('search-result', {error: error.message}, false);
+        }
+    }
+</script>
+{% endblock %}

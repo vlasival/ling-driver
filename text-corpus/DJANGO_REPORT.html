@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&Vcy;&vcy;&iecy;&dcy;&iecy;&ncy;&icy;&iecy;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <p><strong>МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ</strong><br>
+<strong>РОССИЙСКОЙ ФЕДЕРАЦИИ</strong></p>
+<p><strong>ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ</strong><br>
+<strong>ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ВЫСШЕГО ОБРАЗОВАНИЯ</strong><br>
+<strong>«НОВОСИБИРСКИЙ НАЦИОНАЛЬНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ»</strong></p>
+<p><strong>ФАКУЛЬТЕТ ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ</strong></p>
+<p>Кафедра Систем информатики</p>
+<p>Направление подготовки 09.06.01 – Информатика и вычислительная техника</p>
+<p><strong>ОТЧЕТ</strong></p>
+<p><strong>Тема задания</strong>:<br>
+<strong>Разработка хранилища корпуса текстов</strong></p>
+<p>Новосибирск 2025</p>
+<p><a href="#%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5">Введение	3</a></p>
+<p><a href="#1.-%D1%80%D0%B5%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC%D0%B0">1. Реализация алгоритма	3</a></p>
+<p><a href="#1.1-%D0%B0%D1%80%D1%85%D0%B8%D1%82%D0%B5%D0%BA%D1%82%D1%83%D1%80%D0%B0-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B">1.1 Архитектура системы	3</a></p>
+<p><a href="#1.2-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85">1.2 Модели данных	4</a></p>
+<p><a href="#1.2.1-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C-corpus">1.2.1 Модель Corpus	4</a></p>
+<p><a href="#1.2.2-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C-text">1.2.2 Модель Text	5</a></p>
+<p><a href="#1.2.3-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C-test">1.2.3 Модель Test	6</a></p>
+<p><a href="#1.3-%D1%80%D0%B5%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B5%D0%B2">1.3 Реализация репозиториев	6</a></p>
+<p><a href="#1.3.1-corpusrepository">1.3.1 CorpusRepository	6</a></p>
+<p><a href="#1.3.2-textrepository">1.3.2 TextRepository	8</a></p>
+<p><a href="#1.3.3-%D0%B8%D0%BD%D1%82%D0%B5%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D1%8F-neo4j-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B5%D0%B2">1.3.3 Интеграция Neo4j репозиториев	10</a></p>
+<p><a href="#1.4-%D1%80%D0%B5%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-rest-api">1.4 Реализация REST API	11</a></p>
+<p><a href="#1.4.1-corpus-api-endpoints">1.4.1 Corpus API Endpoints	11</a></p>
+<p><a href="#1.4.2-text-api-endpoints">1.4.2 Text API Endpoints	13</a></p>
+<p><a href="#1.4.3-ontology-api-endpoints">1.4.3 Ontology API Endpoints	15</a></p>
+<p><a href="#1.5-%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-django-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0">1.5 Настройка Django проекта	17</a></p>
+<p><a href="#1.5.1-%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D1%8F-settingspy">1.5.1 Конфигурация settings.py	17</a></p>
+<p><a href="#1.5.2-url-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F">1.5.2 URL маршрутизация	18</a></p>
+<p><a href="#1.5.3-%D0%BC%D0%B8%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D0%B8-%D0%B1%D0%B0%D0%B7%D1%8B-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85">1.5.3 Миграции базы данных	19</a></p>
+<p><a href="#1.6-%D1%83%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%BE%D0%BC">1.6 Управление сервером	19</a></p>
+<p><a href="#1.6.1-%D1%81%D0%BA%D1%80%D0%B8%D0%BF%D1%82-%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA%D0%B0-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B0">1.6.1 Скрипт запуска сервера	19</a></p>
+<p><a href="#1.6.2-%D1%81%D0%BA%D1%80%D0%B8%D0%BF%D1%82-%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B8-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B0">1.6.2 Скрипт остановки сервера	21</a></p>
+<p><a href="#2.-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B8-%D0%B2%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%86%D0%B8%D1%8F">2. Тестирование и валидация	22</a></p>
+<p><a href="#2.1-%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">2.1 Функциональное тестирование	22</a></p>
+<p><a href="#2.2-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BD%D0%B0-%D1%80%D0%B5%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D1%85-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85">2.2 Тестирование на реальных данных	23</a></p>
+<p><a href="#2.3-%D1%80%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82%D1%8B-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F">2.3 Результаты тестирования	24</a></p>
+<p><a href="#%D0%B7%D0%B0%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5">Заключение	25</a></p>
+<p><a href="#%D1%81%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D0%BB%D0%B8%D1%82%D0%B5%D1%80%D0%B0%D1%82%D1%83%D1%80%D1%8B">Список литературы	26</a></p>
+<h2 id="введение">Введение</h2>
+<p>В рамках данного проекта была разработана система хранения и управления корпусом текстов на основе Django веб-фреймворка с интеграцией Neo4j для работы с онтологиями. Целью проекта являлось создание полнофункционального REST API для управления текстовыми корпусами, отдельными текстами и их взаимосвязями, а также интеграция с ранее разработанными репозиториями для работы с графовыми данными.</p>
+<p>Система представляет собой современное веб-приложение, которое позволяет хранить и управлять корпусами текстов различных жанров, создавать и редактировать отдельные тексты, устанавливать связи между текстами (например, переводы), а также работать с онтологическими данными через интегрированные Neo4j репозитории.</p>
+<p>Разработанная система обеспечивает масштабируемость, надежность и удобство использования благодаря использованию современных технологий и лучших практик разработки.</p>
+<h2 id="1-реализация-алгоритма">1. Реализация алгоритма</h2>
+<h3 id="11-архитектура-системы">1.1 Архитектура системы</h3>
+<p>Для реализации системы хранения корпуса текстов была выбрана архитектура на основе Django REST Framework с интеграцией Neo4j. Основные компоненты системы представлены на рисунке 1.</p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    Django Web Application                   │
+├─────────────────────────────────────────────────────────────┤
+│  REST API Layer (views.py)                                 │
+│  ├── Corpus API Endpoints                                  │
+│  ├── Text API Endpoints                                    │
+│  └── Ontology API Endpoints                                │
+├─────────────────────────────────────────────────────────────┤
+│  Repository Layer                                          │
+│  ├── CorpusRepository                                      │
+│  ├── TextRepository                                        │
+│  ├── OntologyRepository (Neo4j)                           │
+│  └── GraphRepository (Neo4j)                              │
+├─────────────────────────────────────────────────────────────┤
+│  Data Layer                                                │
+│  ├── SQLite Database (Corpus, Text models)                │
+│  └── Neo4j Database (Ontology)                            │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>Рисунок 1 – Архитектура системы</p>
+<p>Система построена по принципу многослойной архитектуры с четким разделением ответственности между компонентами.</p>
+<h3 id="12-модели-данных">1.2 Модели данных</h3>
+<h4 id="121-модель-corpus">1.2.1 Модель Corpus</h4>
+<p>Для представления корпуса текстов была создана модель Corpus, приведенная на листинге 1.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Corpus</span>(models.Model):
+    <span class="hljs-string">&quot;&quot;&quot;Модель корпуса текстов&quot;&quot;&quot;</span>
+    name = models.CharField(max_length=<span class="hljs-number">200</span>, verbose_name=<span class="hljs-string">&quot;Название&quot;</span>)
+    description = models.TextField(verbose_name=<span class="hljs-string">&quot;Описание&quot;</span>, blank=<span class="hljs-literal">True</span>)
+    genre = models.CharField(max_length=<span class="hljs-number">100</span>, verbose_name=<span class="hljs-string">&quot;Жанр&quot;</span>, blank=<span class="hljs-literal">True</span>)
+    created_at = models.DateTimeField(auto_now_add=<span class="hljs-literal">True</span>, verbose_name=<span class="hljs-string">&quot;Дата создания&quot;</span>)
+    updated_at = models.DateTimeField(auto_now=<span class="hljs-literal">True</span>, verbose_name=<span class="hljs-string">&quot;Дата обновления&quot;</span>)
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Meta</span>:
+        verbose_name = <span class="hljs-string">&quot;Корпус&quot;</span>
+        verbose_name_plural = <span class="hljs-string">&quot;Корпуса&quot;</span>
+        ordering = [<span class="hljs-string">&#x27;-created_at&#x27;</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> self.name
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_absolute_url</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;/api/corpus/<span class="hljs-subst">{self.pk}</span>/&quot;</span>
+</code></pre>
+<p>Листинг 1 – Модель Corpus</p>
+<p>Модель включает основные поля для описания корпуса: название, описание, жанр и временные метки для отслеживания изменений.</p>
+<h4 id="122-модель-text">1.2.2 Модель Text</h4>
+<p>Для представления отдельных текстов была создана модель Text, приведенная на листинге 2.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Text</span>(models.Model):
+    <span class="hljs-string">&quot;&quot;&quot;Модель текста&quot;&quot;&quot;</span>
+    name = models.CharField(max_length=<span class="hljs-number">200</span>, verbose_name=<span class="hljs-string">&quot;Название&quot;</span>)
+    description = models.TextField(verbose_name=<span class="hljs-string">&quot;Описание&quot;</span>, blank=<span class="hljs-literal">True</span>)
+    text = models.TextField(verbose_name=<span class="hljs-string">&quot;Текст&quot;</span>, validators=[MinLengthValidator(<span class="hljs-number">10</span>)])
+    corpus = models.ForeignKey(
+        Corpus, 
+        on_delete=models.CASCADE, 
+        related_name=<span class="hljs-string">&#x27;texts&#x27;</span>,
+        verbose_name=<span class="hljs-string">&quot;Корпус&quot;</span>
+    )
+    has_translation = models.ForeignKey(
+        <span class="hljs-string">&#x27;self&#x27;</span>,
+        on_delete=models.SET_NULL,
+        null=<span class="hljs-literal">True</span>,
+        blank=<span class="hljs-literal">True</span>,
+        related_name=<span class="hljs-string">&#x27;translations&#x27;</span>,
+        verbose_name=<span class="hljs-string">&quot;Перевод&quot;</span>
+    )
+    created_at = models.DateTimeField(auto_now_add=<span class="hljs-literal">True</span>, verbose_name=<span class="hljs-string">&quot;Дата создания&quot;</span>)
+    updated_at = models.DateTimeField(auto_now=<span class="hljs-literal">True</span>, verbose_name=<span class="hljs-string">&quot;Дата обновления&quot;</span>)
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Meta</span>:
+        verbose_name = <span class="hljs-string">&quot;Текст&quot;</span>
+        verbose_name_plural = <span class="hljs-string">&quot;Тексты&quot;</span>
+        ordering = [<span class="hljs-string">&#x27;-created_at&#x27;</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> self.name
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_absolute_url</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;/api/text/<span class="hljs-subst">{self.pk}</span>/&quot;</span>
+</code></pre>
+<p>Листинг 2 – Модель Text</p>
+<p>Модель включает связь с корпусом через ForeignKey и self-reference для поддержки переводов текстов.</p>
+<h4 id="123-модель-test">1.2.3 Модель Test</h4>
+<p>Для совместимости с существующим кодом была сохранена модель Test, приведенная на листинге 3.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Test</span>(models.Model):
+    <span class="hljs-string">&quot;&quot;&quot;Тестовая модель для совместимости&quot;&quot;&quot;</span>
+    name = models.TextField()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> self.name
+</code></pre>
+<p>Листинг 3 – Модель Test</p>
+<h3 id="13-реализация-репозиториев">1.3 Реализация репозиториев</h3>
+<h4 id="131-corpusrepository">1.3.1 CorpusRepository</h4>
+<p>Для работы с корпусами был реализован репозиторий CorpusRepository, приведенный на листинге 4.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CorpusRepository</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Репозиторий для работы с корпусами текстов&quot;&quot;&quot;</span>
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">pass</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">collect_corpus</span>(<span class="hljs-params">self, corpus: Corpus</span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]:
+        <span class="hljs-string">&quot;&quot;&quot;
+        Трансформация объекта Corpus в словарь
+        
+        Args:
+            corpus: Объект Corpus
+            
+        Returns:
+            Словарь с данными корпуса
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-string">&#x27;id&#x27;</span>: corpus.pk,
+            <span class="hljs-string">&#x27;name&#x27;</span>: corpus.name,
+            <span class="hljs-string">&#x27;description&#x27;</span>: corpus.description,
+            <span class="hljs-string">&#x27;genre&#x27;</span>: corpus.genre,
+            <span class="hljs-string">&#x27;created_at&#x27;</span>: corpus.created_at.isoformat(),
+            <span class="hljs-string">&#x27;updated_at&#x27;</span>: corpus.updated_at.isoformat(),
+            <span class="hljs-string">&#x27;texts_count&#x27;</span>: corpus.texts.count()
+        }
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">collect_corpus_with_texts</span>(<span class="hljs-params">self, corpus: Corpus</span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]:
+        <span class="hljs-string">&quot;&quot;&quot;
+        Трансформация объекта Corpus со всеми текстами в словарь
+        
+        Args:
+            corpus: Объект Corpus
+            
+        Returns:
+            Словарь с данными корпуса и текстами
+        &quot;&quot;&quot;</span>
+        corpus_data = self.collect_corpus(corpus)
+        corpus_data[<span class="hljs-string">&#x27;texts&#x27;</span>] = [
+            {
+                <span class="hljs-string">&#x27;id&#x27;</span>: text.pk,
+                <span class="hljs-string">&#x27;name&#x27;</span>: text.name,
+                <span class="hljs-string">&#x27;description&#x27;</span>: text.description,
+                <span class="hljs-string">&#x27;text_preview&#x27;</span>: text.text[:<span class="hljs-number">200</span>] + <span class="hljs-string">&#x27;...&#x27;</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(text.text) &gt; <span class="hljs-number">200</span> <span class="hljs-keyword">else</span> text.text,
+                <span class="hljs-string">&#x27;created_at&#x27;</span>: text.created_at.isoformat(),
+                <span class="hljs-string">&#x27;has_translation_id&#x27;</span>: text.has_translation.pk <span class="hljs-keyword">if</span> text.has_translation <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+            }
+            <span class="hljs-keyword">for</span> text <span class="hljs-keyword">in</span> corpus.texts.<span class="hljs-built_in">all</span>()
+        ]
+        <span class="hljs-keyword">return</span> corpus_data
+</code></pre>
+<p>Листинг 4 – CorpusRepository</p>
+<p>Репозиторий обеспечивает трансформацию объектов Django в словари для API и включает методы для работы с текстами корпуса.</p>
+<h4 id="132-textrepository">1.3.2 TextRepository</h4>
+<p>Для работы с текстами был реализован репозиторий TextRepository, приведенный на листинге 5.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TextRepository</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Репозиторий для работы с текстами&quot;&quot;&quot;</span>
+    
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">pass</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">collect_text</span>(<span class="hljs-params">self, text: Text</span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]:
+        <span class="hljs-string">&quot;&quot;&quot;
+        Трансформация объекта Text в словарь
+        
+        Args:
+            text: Объект Text
+            
+        Returns:
+            Словарь с данными текста
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-string">&#x27;id&#x27;</span>: text.pk,
+            <span class="hljs-string">&#x27;name&#x27;</span>: text.name,
+            <span class="hljs-string">&#x27;description&#x27;</span>: text.description,
+            <span class="hljs-string">&#x27;text&#x27;</span>: text.text,
+            <span class="hljs-string">&#x27;corpus_id&#x27;</span>: text.corpus.pk,
+            <span class="hljs-string">&#x27;corpus_name&#x27;</span>: text.corpus.name,
+            <span class="hljs-string">&#x27;has_translation_id&#x27;</span>: text.has_translation.pk <span class="hljs-keyword">if</span> text.has_translation <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>,
+            <span class="hljs-string">&#x27;has_translation_name&#x27;</span>: text.has_translation.name <span class="hljs-keyword">if</span> text.has_translation <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>,
+            <span class="hljs-string">&#x27;created_at&#x27;</span>: text.created_at.isoformat(),
+            <span class="hljs-string">&#x27;updated_at&#x27;</span>: text.updated_at.isoformat()
+        }
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">create_text</span>(<span class="hljs-params">self, text_data: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]</span>) -&gt; <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]:
+        <span class="hljs-string">&quot;&quot;&quot;
+        Создать новый текст
+        
+        Args:
+            text_data: Данные текста
+            
+        Returns:
+            Словарь с данными созданного текста
+        &quot;&quot;&quot;</span>
+        text = Text()
+        text.name = text_data.get(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)
+        text.description = text_data.get(<span class="hljs-string">&#x27;description&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)
+        text.text = text_data.get(<span class="hljs-string">&#x27;text&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)
+        
+        <span class="hljs-comment"># Устанавливаем корпус</span>
+        corpus_id = text_data.get(<span class="hljs-string">&#x27;corpus_id&#x27;</span>)
+        <span class="hljs-keyword">if</span> corpus_id:
+            <span class="hljs-keyword">try</span>:
+                corpus = Corpus.objects.get(pk=corpus_id)
+                text.corpus = corpus
+            <span class="hljs-keyword">except</span> Corpus.DoesNotExist:
+                <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f&quot;Корпус с ID <span class="hljs-subst">{corpus_id}</span> не найден&quot;</span>)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;Не указан corpus_id&quot;</span>)
+        
+        <span class="hljs-comment"># Устанавливаем перевод если указан</span>
+        translation_id = text_data.get(<span class="hljs-string">&#x27;has_translation_id&#x27;</span>)
+        <span class="hljs-keyword">if</span> translation_id:
+            <span class="hljs-keyword">try</span>:
+                translation = Text.objects.get(pk=translation_id)
+                text.has_translation = translation
+            <span class="hljs-keyword">except</span> Text.DoesNotExist:
+                <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">f&quot;Текст-перевод с ID <span class="hljs-subst">{translation_id}</span> не найден&quot;</span>)
+        
+        text.save()
+        <span class="hljs-keyword">return</span> self.collect_text(text)
+</code></pre>
+<p>Листинг 5 – TextRepository</p>
+<p>Репозиторий обеспечивает полный жизненный цикл текстов с поддержкой связей с корпусами и переводами.</p>
+<h4 id="133-интеграция-neo4j-репозиториев">1.3.3 Интеграция Neo4j репозиториев</h4>
+<p>Для интеграции с Neo4j были скопированы и адаптированы репозитории из предыдущих работ, как показано на листинге 6.</p>
+<pre><code class="language-python"><span class="hljs-comment"># Интеграция в views.py</span>
+<span class="hljs-keyword">from</span> db.api.ontology_repository <span class="hljs-keyword">import</span> OntologyRepository
+<span class="hljs-keyword">from</span> db.api.graph_repository <span class="hljs-keyword">import</span> GraphRepository
+
+<span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
+<span class="hljs-meta">@permission_classes(<span class="hljs-params">(<span class="hljs-params">AllowAny,</span>)</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_ontology</span>(<span class="hljs-params">request</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Получить всю онтологию&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">from</span> django.conf <span class="hljs-keyword">import</span> settings
+        ontology_repo = OntologyRepository(
+            uri=settings.NEO4J_URI,
+            user=settings.NEO4J_USER,
+            password=settings.NEO4J_PASSWORD,
+            database=settings.NEO4J_DATABASE
+        )
+        
+        ontology = ontology_repo.get_ontology()
+        ontology_repo.close()
+        
+        <span class="hljs-comment"># Преобразуем TNode в словари</span>
+        ontology_data = []
+        <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> ontology:
+            ontology_data.append({
+                <span class="hljs-string">&#x27;id&#x27;</span>: node.<span class="hljs-built_in">id</span>,
+                <span class="hljs-string">&#x27;uri&#x27;</span>: node.uri,
+                <span class="hljs-string">&#x27;title&#x27;</span>: node.title,
+                <span class="hljs-string">&#x27;description&#x27;</span>: node.description
+            })
+        
+        <span class="hljs-keyword">return</span> Response(ontology_data)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-built_in">str</span>(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+</code></pre>
+<p>Листинг 6 – Интеграция Neo4j репозиториев</p>
+<h3 id="14-реализация-rest-api">1.4 Реализация REST API</h3>
+<h4 id="141-corpus-api-endpoints">1.4.1 Corpus API Endpoints</h4>
+<p>Для работы с корпусами были реализованы следующие endpoints, приведенные на листинге 7.</p>
+<pre><code class="language-python"><span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
+<span class="hljs-meta">@permission_classes(<span class="hljs-params">(<span class="hljs-params">AllowAny,</span>)</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_corpus</span>(<span class="hljs-params">request</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Получить корпус по ID&quot;&quot;&quot;</span>
+    corpus_id = request.GET.get(<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-literal">None</span>)
+    <span class="hljs-keyword">if</span> corpus_id <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-string">&#x27;ID корпуса не указан&#x27;</span>}, status=status.HTTP_400_BAD_REQUEST)
+    
+    <span class="hljs-keyword">try</span>:
+        corpus_id = <span class="hljs-built_in">int</span>(corpus_id)
+    <span class="hljs-keyword">except</span> ValueError:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-string">&#x27;Неверный формат ID&#x27;</span>}, status=status.HTTP_400_BAD_REQUEST)
+    
+    corpus_repo = CorpusRepository()
+    corpus = corpus_repo.get_corpus(corpus_id)
+    
+    <span class="hljs-keyword">if</span> corpus <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-string">&#x27;Корпус не найден&#x27;</span>}, status=status.HTTP_404_NOT_FOUND)
+    
+    <span class="hljs-keyword">return</span> Response(corpus)
+
+<span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span>
+<span class="hljs-meta">@permission_classes(<span class="hljs-params">(<span class="hljs-params">AllowAny,</span>)</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">create_corpus</span>(<span class="hljs-params">request</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Создать новый корпус&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">try</span>:
+        data = json.loads(request.body.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))
+    <span class="hljs-keyword">except</span> json.JSONDecodeError:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-string">&#x27;Неверный формат JSON&#x27;</span>}, status=status.HTTP_400_BAD_REQUEST)
+    
+    corpus_repo = CorpusRepository()
+    <span class="hljs-keyword">try</span>:
+        corpus = corpus_repo.create_corpus(data)
+        <span class="hljs-keyword">return</span> Response(corpus, status=status.HTTP_201_CREATED)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-built_in">str</span>(e)}, status=status.HTTP_400_BAD_REQUEST)
+</code></pre>
+<p>Листинг 7 – Corpus API Endpoints</p>
+<h4 id="142-text-api-endpoints">1.4.2 Text API Endpoints</h4>
+<p>Для работы с текстами были реализованы следующие endpoints, приведенные на листинге 8.</p>
+<pre><code class="language-python"><span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
+<span class="hljs-meta">@permission_classes(<span class="hljs-params">(<span class="hljs-params">AllowAny,</span>)</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_text</span>(<span class="hljs-params">request</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Получить текст по ID&quot;&quot;&quot;</span>
+    text_id = request.GET.get(<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-literal">None</span>)
+    <span class="hljs-keyword">if</span> text_id <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-string">&#x27;ID текста не указан&#x27;</span>}, status=status.HTTP_400_BAD_REQUEST)
+    
+    <span class="hljs-keyword">try</span>:
+        text_id = <span class="hljs-built_in">int</span>(text_id)
+    <span class="hljs-keyword">except</span> ValueError:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-string">&#x27;Неверный формат ID&#x27;</span>}, status=status.HTTP_400_BAD_REQUEST)
+    
+    text_repo = TextRepository()
+    text = text_repo.get_text(text_id)
+    
+    <span class="hljs-keyword">if</span> text <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-string">&#x27;Текст не найден&#x27;</span>}, status=status.HTTP_404_NOT_FOUND)
+    
+    <span class="hljs-keyword">return</span> Response(text)
+
+<span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span>
+<span class="hljs-meta">@permission_classes(<span class="hljs-params">(<span class="hljs-params">AllowAny,</span>)</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">create_text</span>(<span class="hljs-params">request</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Создать новый текст&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">try</span>:
+        data = json.loads(request.body.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))
+    <span class="hljs-keyword">except</span> json.JSONDecodeError:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-string">&#x27;Неверный формат JSON&#x27;</span>}, status=status.HTTP_400_BAD_REQUEST)
+    
+    text_repo = TextRepository()
+    <span class="hljs-keyword">try</span>:
+        text = text_repo.create_text(data)
+        <span class="hljs-keyword">return</span> Response(text, status=status.HTTP_201_CREATED)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-built_in">str</span>(e)}, status=status.HTTP_400_BAD_REQUEST)
+</code></pre>
+<p>Листинг 8 – Text API Endpoints</p>
+<h4 id="143-ontology-api-endpoints">1.4.3 Ontology API Endpoints</h4>
+<p>Для работы с онтологией были реализованы следующие endpoints, приведенные на листинге 9.</p>
+<pre><code class="language-python"><span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
+<span class="hljs-meta">@permission_classes(<span class="hljs-params">(<span class="hljs-params">AllowAny,</span>)</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_ontology_parent_classes</span>(<span class="hljs-params">request</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Получить корневые классы онтологии&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">from</span> django.conf <span class="hljs-keyword">import</span> settings
+        ontology_repo = OntologyRepository(
+            uri=settings.NEO4J_URI,
+            user=settings.NEO4J_USER,
+            password=settings.NEO4J_PASSWORD,
+            database=settings.NEO4J_DATABASE
+        )
+        
+        classes = ontology_repo.get_ontology_parent_classes()
+        ontology_repo.close()
+        
+        <span class="hljs-comment"># Преобразуем TNode в словари</span>
+        classes_data = []
+        <span class="hljs-keyword">for</span> cls <span class="hljs-keyword">in</span> classes:
+            classes_data.append({
+                <span class="hljs-string">&#x27;id&#x27;</span>: cls.<span class="hljs-built_in">id</span>,
+                <span class="hljs-string">&#x27;uri&#x27;</span>: cls.uri,
+                <span class="hljs-string">&#x27;title&#x27;</span>: cls.title,
+                <span class="hljs-string">&#x27;description&#x27;</span>: cls.description
+            })
+        
+        <span class="hljs-keyword">return</span> Response(classes_data)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-built_in">str</span>(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+<span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span>
+<span class="hljs-meta">@permission_classes(<span class="hljs-params">(<span class="hljs-params">AllowAny,</span>)</span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">create_class</span>(<span class="hljs-params">request</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Создать новый класс&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">try</span>:
+        data = json.loads(request.body.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))
+    <span class="hljs-keyword">except</span> json.JSONDecodeError:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-string">&#x27;Неверный формат JSON&#x27;</span>}, status=status.HTTP_400_BAD_REQUEST)
+    
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">from</span> django.conf <span class="hljs-keyword">import</span> settings
+        ontology_repo = OntologyRepository(
+            uri=settings.NEO4J_URI,
+            user=settings.NEO4J_USER,
+            password=settings.NEO4J_PASSWORD,
+            database=settings.NEO4J_DATABASE
+        )
+        
+        cls = ontology_repo.create_class(
+            title=data.get(<span class="hljs-string">&#x27;title&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>),
+            description=data.get(<span class="hljs-string">&#x27;description&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>),
+            parent_uri=data.get(<span class="hljs-string">&#x27;parent_uri&#x27;</span>)
+        )
+        ontology_repo.close()
+        
+        <span class="hljs-keyword">return</span> Response({
+            <span class="hljs-string">&#x27;id&#x27;</span>: cls.<span class="hljs-built_in">id</span>,
+            <span class="hljs-string">&#x27;uri&#x27;</span>: cls.uri,
+            <span class="hljs-string">&#x27;title&#x27;</span>: cls.title,
+            <span class="hljs-string">&#x27;description&#x27;</span>: cls.description
+        }, status=status.HTTP_201_CREATED)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-keyword">return</span> Response({<span class="hljs-string">&#x27;error&#x27;</span>: <span class="hljs-built_in">str</span>(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+</code></pre>
+<p>Листинг 9 – Ontology API Endpoints</p>
+<h3 id="15-настройка-django-проекта">1.5 Настройка Django проекта</h3>
+<h4 id="151-конфигурация-settingspy">1.5.1 Конфигурация <a href="http://settings.py">settings.py</a></h4>
+<p>Для корректной работы системы была настроена конфигурация Django, приведенная на листинге 10.</p>
+<pre><code class="language-python"><span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> dj_database_url
+<span class="hljs-keyword">from</span> dotenv <span class="hljs-keyword">import</span> load_dotenv
+
+<span class="hljs-comment"># Load environment variables</span>
+load_dotenv()
+
+INSTALLED_APPS = [
+    <span class="hljs-string">&#x27;django.contrib.admin&#x27;</span>,
+    <span class="hljs-string">&#x27;django.contrib.auth&#x27;</span>,
+    <span class="hljs-string">&#x27;django.contrib.contenttypes&#x27;</span>,
+    <span class="hljs-string">&#x27;django.contrib.sessions&#x27;</span>,
+    <span class="hljs-string">&#x27;django.contrib.messages&#x27;</span>,
+    <span class="hljs-string">&#x27;django.contrib.staticfiles&#x27;</span>,
+    <span class="hljs-string">&#x27;rest_framework&#x27;</span>,
+    <span class="hljs-string">&#x27;rest_framework.authtoken&#x27;</span>,
+    <span class="hljs-string">&#x27;corsheaders&#x27;</span>,
+    <span class="hljs-string">&#x27;db&#x27;</span>,
+]
+
+REST_FRAMEWORK = {
+    <span class="hljs-string">&#x27;DEFAULT_AUTHENTICATION_CLASSES&#x27;</span>: [
+        <span class="hljs-string">&#x27;rest_framework.authentication.TokenAuthentication&#x27;</span>,
+    ],
+    <span class="hljs-string">&#x27;DEFAULT_PERMISSION_CLASSES&#x27;</span>: [
+        <span class="hljs-string">&#x27;rest_framework.permissions.AllowAny&#x27;</span>,
+        <span class="hljs-string">&#x27;rest_framework.permissions.IsAuthenticated&#x27;</span>,
+    ]
+}
+
+<span class="hljs-comment"># Neo4j configuration</span>
+NEO4J_URI = os.getenv(<span class="hljs-string">&#x27;NEO4J_URI&#x27;</span>, <span class="hljs-string">&#x27;neo4j://127.0.0.1:7687&#x27;</span>)
+NEO4J_USER = os.getenv(<span class="hljs-string">&#x27;NEO4J_USER&#x27;</span>, <span class="hljs-string">&#x27;neo4j&#x27;</span>)
+NEO4J_PASSWORD = os.getenv(<span class="hljs-string">&#x27;NEO4J_PASSWORD&#x27;</span>, <span class="hljs-string">&#x27;123123123&#x27;</span>)
+NEO4J_DATABASE = os.getenv(<span class="hljs-string">&#x27;NEO4J_DATABASE&#x27;</span>, <span class="hljs-string">&#x27;corpus&#x27;</span>)
+</code></pre>
+<p>Листинг 10 – Конфигурация <a href="http://settings.py">settings.py</a></p>
+<h4 id="152-url-маршрутизация">1.5.2 URL маршрутизация</h4>
+<p>Для организации API endpoints была настроена маршрутизация, приведенная на листинге 11.</p>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path
+<span class="hljs-keyword">from</span> db.views <span class="hljs-keyword">import</span> (
+    <span class="hljs-comment"># Test endpoints</span>
+    getTest, postTest, deleteTest,
+    
+    <span class="hljs-comment"># Corpus endpoints</span>
+    get_corpus, get_corpus_with_texts, get_all_corpora,
+    create_corpus, update_corpus, delete_corpus,
+    
+    <span class="hljs-comment"># Text endpoints</span>
+    get_text, get_texts_by_corpus, get_all_texts,
+    create_text, update_text, delete_text,
+    
+    <span class="hljs-comment"># Ontology endpoints</span>
+    get_ontology, get_ontology_parent_classes, get_class,
+    create_class, collect_signature,
+)
+
+urlpatterns = [
+    <span class="hljs-comment"># Test endpoints</span>
+    path(<span class="hljs-string">&#x27;getTest&#x27;</span>, getTest, name=<span class="hljs-string">&#x27;getTest&#x27;</span>),
+    path(<span class="hljs-string">&#x27;postTest&#x27;</span>, postTest, name=<span class="hljs-string">&#x27;postTest&#x27;</span>),
+    path(<span class="hljs-string">&#x27;deleteTest&#x27;</span>, deleteTest, name=<span class="hljs-string">&#x27;deleteTest&#x27;</span>),
+    
+    <span class="hljs-comment"># Corpus endpoints</span>
+    path(<span class="hljs-string">&#x27;corpus/&#x27;</span>, get_all_corpora, name=<span class="hljs-string">&#x27;get_all_corpora&#x27;</span>),
+    path(<span class="hljs-string">&#x27;corpus/create/&#x27;</span>, create_corpus, name=<span class="hljs-string">&#x27;create_corpus&#x27;</span>),
+    path(<span class="hljs-string">&#x27;corpus/get/&#x27;</span>, get_corpus, name=<span class="hljs-string">&#x27;get_corpus&#x27;</span>),
+    path(<span class="hljs-string">&#x27;corpus/get_with_texts/&#x27;</span>, get_corpus_with_texts, name=<span class="hljs-string">&#x27;get_corpus_with_texts&#x27;</span>),
+    path(<span class="hljs-string">&#x27;corpus/update/&#x27;</span>, update_corpus, name=<span class="hljs-string">&#x27;update_corpus&#x27;</span>),
+    path(<span class="hljs-string">&#x27;corpus/delete/&#x27;</span>, delete_corpus, name=<span class="hljs-string">&#x27;delete_corpus&#x27;</span>),
+    
+    <span class="hljs-comment"># Text endpoints</span>
+    path(<span class="hljs-string">&#x27;text/&#x27;</span>, get_all_texts, name=<span class="hljs-string">&#x27;get_all_texts&#x27;</span>),
+    path(<span class="hljs-string">&#x27;text/create/&#x27;</span>, create_text, name=<span class="hljs-string">&#x27;create_text&#x27;</span>),
+    path(<span class="hljs-string">&#x27;text/get/&#x27;</span>, get_text, name=<span class="hljs-string">&#x27;get_text&#x27;</span>),
+    path(<span class="hljs-string">&#x27;text/get_by_corpus/&#x27;</span>, get_texts_by_corpus, name=<span class="hljs-string">&#x27;get_texts_by_corpus&#x27;</span>),
+    path(<span class="hljs-string">&#x27;text/update/&#x27;</span>, update_text, name=<span class="hljs-string">&#x27;update_text&#x27;</span>),
+    path(<span class="hljs-string">&#x27;text/delete/&#x27;</span>, delete_text, name=<span class="hljs-string">&#x27;delete_text&#x27;</span>),
+    
+    <span class="hljs-comment"># Ontology endpoints</span>
+    path(<span class="hljs-string">&#x27;ontology/&#x27;</span>, get_ontology, name=<span class="hljs-string">&#x27;get_ontology&#x27;</span>),
+    path(<span class="hljs-string">&#x27;ontology/parent_classes/&#x27;</span>, get_ontology_parent_classes, name=<span class="hljs-string">&#x27;get_ontology_parent_classes&#x27;</span>),
+    path(<span class="hljs-string">&#x27;ontology/class/&#x27;</span>, get_class, name=<span class="hljs-string">&#x27;get_class&#x27;</span>),
+    path(<span class="hljs-string">&#x27;ontology/class/create/&#x27;</span>, create_class, name=<span class="hljs-string">&#x27;create_class&#x27;</span>),
+    path(<span class="hljs-string">&#x27;ontology/signature/&#x27;</span>, collect_signature, name=<span class="hljs-string">&#x27;collect_signature&#x27;</span>),
+]
+</code></pre>
+<p>Листинг 11 – URL маршрутизация</p>
+<h4 id="153-миграции-базы-данных">1.5.3 Миграции базы данных</h4>
+<p>Для создания структуры базы данных были выполнены миграции, приведенные на листинге 12.</p>
+<pre><code class="language-bash">python manage.py makemigrations
+python manage.py migrate
+</code></pre>
+<p>Листинг 12 – Выполнение миграций</p>
+<h3 id="16-управление-сервером">1.6 Управление сервером</h3>
+<h4 id="161-скрипт-запуска-сервера">1.6.1 Скрипт запуска сервера</h4>
+<p>Для корректного запуска сервера был создан скрипт run_server.py, приведенный на листинге 13.</p>
+<pre><code class="language-python"><span class="hljs-comment">#!/usr/bin/env python3</span>
+<span class="hljs-string">&quot;&quot;&quot;
+Скрипт для корректного запуска Django сервера с graceful shutdown
+&quot;&quot;&quot;</span>
+
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> signal
+<span class="hljs-keyword">import</span> subprocess
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">signal_handler</span>(<span class="hljs-params">sig, frame</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Обработчик сигналов для корректного завершения&quot;&quot;&quot;</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nПолучен сигнал завершения, останавливаем сервер...&#x27;</span>)
+    
+    <span class="hljs-comment"># Находим и завершаем процесс Django сервера</span>
+    <span class="hljs-keyword">try</span>:
+        result = subprocess.run([<span class="hljs-string">&#x27;lsof&#x27;</span>, <span class="hljs-string">&#x27;-ti:8000&#x27;</span>], capture_output=<span class="hljs-literal">True</span>, text=<span class="hljs-literal">True</span>)
+        <span class="hljs-keyword">if</span> result.stdout.strip():
+            pids = result.stdout.strip().split(<span class="hljs-string">&#x27;\n&#x27;</span>)
+            <span class="hljs-keyword">for</span> pid <span class="hljs-keyword">in</span> pids:
+                <span class="hljs-keyword">if</span> pid:
+                    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Завершаем процесс <span class="hljs-subst">{pid}</span>&#x27;</span>)
+                    subprocess.run([<span class="hljs-string">&#x27;kill&#x27;</span>, <span class="hljs-string">&#x27;-TERM&#x27;</span>, pid], check=<span class="hljs-literal">False</span>)
+                    time.sleep(<span class="hljs-number">1</span>)
+                    <span class="hljs-comment"># Если процесс не завершился, принудительно</span>
+                    subprocess.run([<span class="hljs-string">&#x27;kill&#x27;</span>, <span class="hljs-string">&#x27;-9&#x27;</span>, pid], check=<span class="hljs-literal">False</span>)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Ошибка при завершении процессов: <span class="hljs-subst">{e}</span>&#x27;</span>)
+    
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Сервер корректно остановлен&#x27;</span>)
+    sys.exit(<span class="hljs-number">0</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+    <span class="hljs-string">&quot;&quot;&quot;Основная функция запуска сервера&quot;&quot;&quot;</span>
+    
+    <span class="hljs-comment"># Устанавливаем обработчики сигналов</span>
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    
+    <span class="hljs-comment"># Проверяем, что мы в правильной директории</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> Path(<span class="hljs-string">&#x27;manage.py&#x27;</span>).exists():
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Файл manage.py не найден. Запустите скрипт из директории Django проекта.&#x27;</span>)
+        sys.exit(<span class="hljs-number">1</span>)
+    
+    <span class="hljs-comment"># Проверяем, свободен ли порт</span>
+    <span class="hljs-keyword">try</span>:
+        result = subprocess.run([<span class="hljs-string">&#x27;lsof&#x27;</span>, <span class="hljs-string">&#x27;-ti:8000&#x27;</span>], capture_output=<span class="hljs-literal">True</span>, text=<span class="hljs-literal">True</span>)
+        <span class="hljs-keyword">if</span> result.stdout.strip():
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Порт 8000 занят, освобождаем...&#x27;</span>)
+            pids = result.stdout.strip().split(<span class="hljs-string">&#x27;\n&#x27;</span>)
+            <span class="hljs-keyword">for</span> pid <span class="hljs-keyword">in</span> pids:
+                <span class="hljs-keyword">if</span> pid:
+                    subprocess.run([<span class="hljs-string">&#x27;kill&#x27;</span>, <span class="hljs-string">&#x27;-9&#x27;</span>, pid], check=<span class="hljs-literal">False</span>)
+            time.sleep(<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">except</span> Exception:
+        <span class="hljs-keyword">pass</span>
+    
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Запускаем Django сервер на порту 8000...&#x27;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Для остановки используйте Ctrl+C&#x27;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;=&#x27;</span> * <span class="hljs-number">50</span>)
+    
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># Запускаем Django сервер</span>
+        process = subprocess.Popen([
+            sys.executable, <span class="hljs-string">&#x27;manage.py&#x27;</span>, <span class="hljs-string">&#x27;runserver&#x27;</span>, <span class="hljs-string">&#x27;8000&#x27;</span>
+        ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=<span class="hljs-literal">True</span>, bufsize=<span class="hljs-number">1</span>)
+        
+        <span class="hljs-comment"># Выводим логи в реальном времени</span>
+        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> process.stdout:
+            <span class="hljs-built_in">print</span>(line.rstrip())
+            
+    <span class="hljs-keyword">except</span> KeyboardInterrupt:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nПолучен сигнал прерывания&#x27;</span>)
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Ошибка запуска сервера: <span class="hljs-subst">{e}</span>&#x27;</span>)
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-comment"># Корректно завершаем процесс</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;process&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">locals</span>():
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Завершаем процесс сервера...&#x27;</span>)
+            process.terminate()
+            <span class="hljs-keyword">try</span>:
+                process.wait(timeout=<span class="hljs-number">5</span>)
+            <span class="hljs-keyword">except</span> subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
+        
+        <span class="hljs-comment"># Дополнительная очистка порта</span>
+        <span class="hljs-keyword">try</span>:
+            result = subprocess.run([<span class="hljs-string">&#x27;lsof&#x27;</span>, <span class="hljs-string">&#x27;-ti:8000&#x27;</span>], capture_output=<span class="hljs-literal">True</span>, text=<span class="hljs-literal">True</span>)
+            <span class="hljs-keyword">if</span> result.stdout.strip():
+                pids = result.stdout.strip().split(<span class="hljs-string">&#x27;\n&#x27;</span>)
+                <span class="hljs-keyword">for</span> pid <span class="hljs-keyword">in</span> pids:
+                    <span class="hljs-keyword">if</span> pid:
+                        subprocess.run([<span class="hljs-string">&#x27;kill&#x27;</span>, <span class="hljs-string">&#x27;-9&#x27;</span>, pid], check=<span class="hljs-literal">False</span>)
+        <span class="hljs-keyword">except</span> Exception:
+            <span class="hljs-keyword">pass</span>
+        
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Сервер корректно остановлен, порт освобожден&#x27;</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    main()
+</code></pre>
+<p>Листинг 13 – Скрипт запуска сервера</p>
+<h4 id="162-скрипт-остановки-сервера">1.6.2 Скрипт остановки сервера</h4>
+<p>Для корректной остановки сервера был создан скрипт stop_server.py, приведенный на листинге 14.</p>
+<pre><code class="language-python"><span class="hljs-comment">#!/usr/bin/env python3</span>
+<span class="hljs-string">&quot;&quot;&quot;
+Скрипт для корректной остановки Django сервера
+&quot;&quot;&quot;</span>
+
+<span class="hljs-keyword">import</span> subprocess
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> time
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">stop_server</span>(<span class="hljs-params">port=<span class="hljs-number">8000</span></span>):
+    <span class="hljs-string">&quot;&quot;&quot;Корректно останавливает Django сервер&quot;&quot;&quot;</span>
+    
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Останавливаем Django сервер на порту <span class="hljs-subst">{port}</span>...&#x27;</span>)
+    
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># Находим процессы на указанном порту</span>
+        result = subprocess.run([<span class="hljs-string">&#x27;lsof&#x27;</span>, <span class="hljs-string">f&#x27;-ti:<span class="hljs-subst">{port}</span>&#x27;</span>], capture_output=<span class="hljs-literal">True</span>, text=<span class="hljs-literal">True</span>)
+        
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> result.stdout.strip():
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Порт <span class="hljs-subst">{port}</span> уже свободен&#x27;</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        
+        pids = result.stdout.strip().split(<span class="hljs-string">&#x27;\n&#x27;</span>)
+        stopped_count = <span class="hljs-number">0</span>
+        
+        <span class="hljs-keyword">for</span> pid <span class="hljs-keyword">in</span> pids:
+            <span class="hljs-keyword">if</span> pid:
+                <span class="hljs-keyword">try</span>:
+                    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;🔄 Завершаем процесс <span class="hljs-subst">{pid}</span>...&#x27;</span>)
+                    
+                    <span class="hljs-comment"># Сначала пробуем мягкое завершение</span>
+                    subprocess.run([<span class="hljs-string">&#x27;kill&#x27;</span>, <span class="hljs-string">&#x27;-TERM&#x27;</span>, pid], check=<span class="hljs-literal">True</span>)
+                    time.sleep(<span class="hljs-number">2</span>)
+                    
+                    <span class="hljs-comment"># Проверяем, завершился ли процесс</span>
+                    check_result = subprocess.run([<span class="hljs-string">&#x27;kill&#x27;</span>, <span class="hljs-string">&#x27;-0&#x27;</span>, pid], capture_output=<span class="hljs-literal">True</span>)
+                    <span class="hljs-keyword">if</span> check_result.returncode == <span class="hljs-number">0</span>:
+                        <span class="hljs-comment"># Процесс все еще работает, принудительно завершаем</span>
+                        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Принудительно завершаем процесс <span class="hljs-subst">{pid}</span>...&#x27;</span>)
+                        subprocess.run([<span class="hljs-string">&#x27;kill&#x27;</span>, <span class="hljs-string">&#x27;-9&#x27;</span>, pid], check=<span class="hljs-literal">True</span>)
+                    
+                    stopped_count += <span class="hljs-number">1</span>
+                    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Процесс <span class="hljs-subst">{pid}</span> завершен&#x27;</span>)
+                    
+                <span class="hljs-keyword">except</span> subprocess.CalledProcessError <span class="hljs-keyword">as</span> e:
+                    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Ошибка при завершении процесса <span class="hljs-subst">{pid}</span>: <span class="hljs-subst">{e}</span>&#x27;</span>)
+        
+        <span class="hljs-comment"># Финальная проверка</span>
+        time.sleep(<span class="hljs-number">1</span>)
+        final_check = subprocess.run([<span class="hljs-string">&#x27;lsof&#x27;</span>, <span class="hljs-string">f&#x27;-ti:<span class="hljs-subst">{port}</span>&#x27;</span>], capture_output=<span class="hljs-literal">True</span>, text=<span class="hljs-literal">True</span>)
+        
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> final_check.stdout.strip():
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Сервер успешно остановлен, порт <span class="hljs-subst">{port}</span> освобожден&#x27;</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Порт <span class="hljs-subst">{port}</span> все еще занят&#x27;</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Ошибка при остановке сервера: <span class="hljs-subst">{e}</span>&#x27;</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+    <span class="hljs-string">&quot;&quot;&quot;Основная функция&quot;&quot;&quot;</span>
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">try</span>:
+            port = <span class="hljs-built_in">int</span>(sys.argv[<span class="hljs-number">1</span>])
+        <span class="hljs-keyword">except</span> ValueError:
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Неверный номер порта&#x27;</span>)
+            sys.exit(<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">else</span>:
+        port = <span class="hljs-number">8000</span>
+    
+    success = stop_server(port)
+    sys.exit(<span class="hljs-number">0</span> <span class="hljs-keyword">if</span> success <span class="hljs-keyword">else</span> <span class="hljs-number">1</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    main()
+</code></pre>
+<p>Листинг 14 – Скрипт остановки сервера</p>
+<h2 id="2-тестирование-и-валидация">2. Тестирование и валидация</h2>
+<h3 id="21-функциональное-тестирование">2.1 Функциональное тестирование</h3>
+<p>Было проведено комплексное тестирование всех компонентов системы:</p>
+<ol>
+<li><strong>Тестирование моделей данных</strong>: Проверена корректность создания и валидации моделей Corpus и Text</li>
+<li><strong>Тестирование репозиториев</strong>: Протестированы все методы CRUD операций</li>
+<li><strong>Тестирование API endpoints</strong>: Проверена работа всех REST API endpoints</li>
+<li><strong>Тестирование интеграции Neo4j</strong>: Валидирована работа с онтологическими данными</li>
+<li><strong>Тестирование управления сервером</strong>: Проверена корректность запуска и остановки</li>
+</ol>
+<h3 id="22-тестирование-на-реальных-данных">2.2 Тестирование на реальных данных</h3>
+<p>Все компоненты системы были протестированы на данных:</p>
+<p><strong>Созданные корпуса:</strong></p>
+<ul>
+<li>&quot;Русская литература&quot; (художественная литература)</li>
+<li>&quot;Научные статьи по лингвистике&quot; (научная литература)</li>
+</ul>
+<p><strong>Созданные тексты:</strong></p>
+<ul>
+<li>&quot;Евгений Онегин&quot; → корпус &quot;Русская литература&quot;</li>
+<li>&quot;Статья о морфологии&quot; → корпус &quot;Научные статьи по лингвистике&quot;</li>
+</ul>
+<p><strong>Созданные классы в онтологии:</strong></p>
+<ul>
+<li>&quot;Текст&quot;</li>
+<li>&quot;Корпус&quot;</li>
+<li>&quot;Документ&quot; → подкласс &quot;Текста&quot;</li>
+</ul>
+<h3 id="23-результаты-тестирования">2.3 Результаты тестирования</h3>
+<p>Все тесты прошли успешно:</p>
+<ul>
+<li>Создание и управление корпусами</li>
+<li>Создание и управление текстами</li>
+<li>Связи между корпусами и текстами</li>
+<li>Self-reference для переводов</li>
+<li>Интеграция с Neo4j онтологией</li>
+<li>Создание иерархии классов</li>
+<li>Корректный запуск и остановка сервера</li>
+<li>Освобождение портов после завершения</li>
+</ul>
+<h2 id="заключение">Заключение</h2>
+<p>В рамках данного проекта была успешно разработана система хранения и управления корпусом текстов на основе Django с интеграцией Neo4j.</p>
+<h2 id="список-литературы">Список литературы</h2>
+<ol>
+<li>Django Documentation. [Электронный ресурс]. URL: <a href="https://docs.djangoproject.com/">https://docs.djangoproject.com/</a></li>
+<li>Django REST Framework Documentation. [Электронный ресурс]. URL: <a href="https://www.django-rest-framework.org/">https://www.django-rest-framework.org/</a></li>
+<li>Neo4j Python Driver Documentation. [Электронный ресурс]. URL: <a href="https://neo4j.com/docs/python-manual/">https://neo4j.com/docs/python-manual/</a></li>
+<li>Python-dotenv Documentation. [Электронный ресурс]. URL: <a href="https://pypi.org/project/python-dotenv/">https://pypi.org/project/python-dotenv/</a></li>
+<li>Django Models Documentation. [Электронный ресурс]. URL: <a href="https://docs.djangoproject.com/en/4.2/topics/db/models/">https://docs.djangoproject.com/en/4.2/topics/db/models/</a></li>
+<li>Django URL Configuration. [Электронный ресурс]. URL: <a href="https://docs.djangoproject.com/en/4.2/topics/http/urls/">https://docs.djangoproject.com/en/4.2/topics/http/urls/</a></li>
+<li>Django Migrations Documentation. [Электронный ресурс]. URL: <a href="https://docs.djangoproject.com/en/4.2/topics/migrations/">https://docs.djangoproject.com/en/4.2/topics/migrations/</a></li>
+<li>REST API Design Best Practices. [Электронный ресурс]. URL: <a href="https://restfulapi.net/">https://restfulapi.net/</a></li>
+<li>Django Best Practices. [Электронный ресурс]. URL: <a href="https://django-best-practices.readthedocs.io/">https://django-best-practices.readthedocs.io/</a></li>
+<li>Python Subprocess Documentation. [Электронный ресурс]. URL: <a href="https://docs.python.org/3/library/subprocess.html">https://docs.python.org/3/library/subprocess.html</a></li>
+</ol>
+
+            
+            
+        </body>
+        </html>

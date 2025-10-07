@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Text Corpus Management{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2> Главная панель</h2>
+    <p>Добро пожаловать в систему управления корпусом текстов!</p>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3> Корпуса</h3>
+        <p>Управление корпусами текстов</p>
+        <div id="corpus-count">Загрузка...</div>
+        <a href="{% url 'corpus_list' %}" class="btn btn-primary">Управлять корпусами</a>
+    </div>
+    
+    <div class="card">
+        <h3> Тексты</h3>
+        <p>Управление отдельными текстами</p>
+        <div id="text-count">Загрузка...</div>
+        <a href="{% url 'text_list' %}" class="btn btn-primary">Управлять текстами</a>
+    </div>
+    
+    <div class="card">
+        <h3> Онтология</h3>
+        <p>Работа с онтологическими данными</p>
+        <div id="ontology-status">Проверка...</div>
+        <a href="{% url 'ontology_view' %}" class="btn btn-primary">Просмотреть онтологию</a>
+    </div>
+    
+    <div class="card">
+        <h3> Система</h3>
+        <p>Статус системы и подключений</p>
+        <div id="system-status">Проверка...</div>
+        <button onclick="checkSystemStatus()" class="btn btn-secondary">Проверить статус</button>
+    </div>
+</div>
+
+<div class="section">
+    <h2> Статистика</h2>
+    <div id="statistics">
+        <p>Загрузка статистики...</p>
+    </div>
+</div>
+
+<script>
+    // Загрузка статистики при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        loadStatistics();
+        checkSystemStatus();
+    });
+    
+    async function loadStatistics() {
+        try {
+            // Загружаем количество корпусов
+            const corpusResult = await makeRequest('/api/corpus/');
+            if (corpusResult.success) {
+                document.getElementById('corpus-count').innerHTML = 
+                    `<strong>${corpusResult.data.length}</strong> корпусов`;
+            } else {
+                document.getElementById('corpus-count').innerHTML = 
+                    '<span class="status offline">Ошибка загрузки</span>';
+            }
+            
+            // Загружаем количество текстов
+            const textResult = await makeRequest('/api/text/');
+            if (textResult.success) {
+                document.getElementById('text-count').innerHTML = 
+                    `<strong>${textResult.data.length}</strong> текстов`;
+            } else {
+                document.getElementById('text-count').innerHTML = 
+                    '<span class="status offline">Ошибка загрузки</span>';
+            }
+            
+            // Загружаем онтологию
+            const ontologyResult = await makeRequest('/api/ontology/');
+            if (ontologyResult.success) {
+                document.getElementById('ontology-status').innerHTML = 
+                    `<span class="status online">Онлайн</span><br><strong>${ontologyResult.data.length}</strong> узлов`;
+            } else {
+                document.getElementById('ontology-status').innerHTML = 
+                    '<span class="status offline">Офлайн</span>';
+            }
+            
+            // Обновляем статистику
+            updateStatistics(corpusResult, textResult, ontologyResult);
+            
+        } catch (error) {
+            console.error('Ошибка загрузки статистики:', error);
+        }
+    }
+    
+    function updateStatistics(corpusResult, textResult, ontologyResult) {
+        const statsDiv = document.getElementById('statistics');
+        
+        let html = '<div class="grid">';
+        
+        // Статистика корпусов
+        html += '<div class="card">';
+        html += '<h3> Корпуса</h3>';
+        if (corpusResult.success) {
+            html += `<p><strong>Всего:</strong> ${corpusResult.data.length}</p>`;
+            if (corpusResult.data.length > 0) {
+                const genres = [...new Set(corpusResult.data.map(c => c.genre).filter(g => g))];
+                html += `<p><strong>Жанры:</strong> ${genres.join(', ')}</p>`;
+            }
+        } else {
+            html += '<p class="status offline">Ошибка загрузки</p>';
+        }
+        html += '</div>';
+        
+        // Статистика текстов
+        html += '<div class="card">';
+        html += '<h3> Тексты</h3>';
+        if (textResult.success) {
+            html += `<p><strong>Всего:</strong> ${textResult.data.length}</p>`;
+            if (textResult.data.length > 0) {
+                const withTranslations = textResult.data.filter(t => t.has_translation_id).length;
+                html += `<p><strong>С переводами:</strong> ${withTranslations}</p>`;
+            }
+        } else {
+            html += '<p class="status offline">Ошибка загрузки</p>';
+        }
+        html += '</div>';
+        
+        // Статистика онтологии
+        html += '<div class="card">';
+        html += '<h3> Онтология</h3>';
+        if (ontologyResult.success) {
+            html += `<p><strong>Узлов:</strong> ${ontologyResult.data.length}</p>`;
+            const classes = ontologyResult.data.filter(n => n.title && n.title !== '');
+            html += `<p><strong>Классов:</strong> ${classes.length}</p>`;
+        } else {
+            html += '<p class="status offline">Neo4j недоступен</p>';
+        }
+        html += '</div>';
+        
+        html += '</div>';
+        statsDiv.innerHTML = html;
+    }
+    
+    async function checkSystemStatus() {
+        const statusDiv = document.getElementById('system-status');
+        statusDiv.innerHTML = 'Проверка...';
+        
+        try {
+            // Проверяем Django API
+            const apiResult = await makeRequest('/api/corpus/');
+            const apiStatus = apiResult.success ? 'online' : 'offline';
+            
+            // Проверяем Neo4j
+            const neo4jResult = await makeRequest('/api/ontology/');
+            const neo4jStatus = neo4jResult.success ? 'online' : 'offline';
+            
+            let html = '<div style="display: flex; gap: 10px; flex-wrap: wrap;">';
+            html += `<span class="status ${apiStatus}">Django API</span>`;
+            html += `<span class="status ${neo4jStatus}">Neo4j</span>`;
+            html += '</div>';
+            
+            statusDiv.innerHTML = html;
+            
+        } catch (error) {
+            statusDiv.innerHTML = '<span class="status offline">Ошибка проверки</span>';
+        }
+    }
+</script>
+{% endblock %}
