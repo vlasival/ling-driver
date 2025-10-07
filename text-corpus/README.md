@@ -1,163 +1,100 @@
-# Text Corpus Django Project
+# Text Corpus Management
 
-Django проект для хранения и управления корпусом текстов с интеграцией Neo4j онтологии.
+Система управления корпусом текстов с интеграцией Neo4j.
 
-## Описание
+## Быстрый старт
 
-Проект реализует REST API для работы с корпусами текстов и отдельными текстами, а также интегрирует функциональность Neo4j для работы с онтологиями.
+### 1. Настройка
+
+Отредактируйте файл `config.env`:
+
+```env
+# Порты серверов
+DJANGO_SERVER_PORT=8000      # Бэкенд (API)
+WEB_INTERFACE_PORT=8001      # Фронтенд (веб-интерфейс)
+
+# Neo4j настройки
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=123123123
+NEO4J_DATABASE=corpus
+```
+
+### 2. Запуск
+
+```bash
+# Бэкенд (API сервер)
+python3 backend.py
+
+# Фронтенд (веб-интерфейс)
+python3 frontend.py
+
+# Остановка всех серверов
+python3 stop.py
+```
+
+### 3. Доступ
+
+- **API**: http://localhost:8000/api/
+- **Веб-интерфейс**: http://localhost:8001/
+
+## API Endpoints
+
+### Корпуса
+- `GET /api/corpus/` - список корпусов
+- `POST /api/corpus/create/` - создание корпуса
+- `GET /api/corpus/get/` - получение корпуса
+- `PUT /api/corpus/update/` - обновление корпуса
+- `DELETE /api/corpus/delete/` - удаление корпуса
+
+### Тексты
+- `GET /api/text/` - список текстов
+- `POST /api/text/create/` - создание текста
+- `GET /api/text/get/` - получение текста
+- `PUT /api/text/update/` - обновление текста
+- `DELETE /api/text/delete/` - удаление текста
+
+### Онтология
+- `GET /api/ontology/` - список узлов
+- `POST /api/ontology/create_class/` - создание класса
+- `GET /api/ontology/get_class/` - получение класса
+- `POST /api/ontology/create_object/` - создание объекта
+- `GET /api/ontology/get_object/` - получение объекта
+
+## Веб-интерфейс
+
+- `/` - главная страница (Dashboard)
+- `/corpus/` - управление корпусами
+- `/text/` - управление текстами
+- `/ontology/` - управление онтологией
+
+## Требования
+
+- Python 3.8+
+- Django 4.2+
+- Neo4j 5.0+
+- python-dotenv
+
+## Установка зависимостей
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Структура проекта
 
 ```
 text-corpus/
-├── core/                    # Основные настройки Django
-│   ├── settings.py         # Настройки проекта
-│   ├── urls.py            # Главные URL маршруты
-│   └── wsgi.py            # WSGI конфигурация
-├── db/                     # Основное приложение
-│   ├── models.py          # Модели данных (Corpus, Text)
-│   ├── views.py           # API views
-│   ├── urls.py            # URL маршруты API
-│   └── api/               # Репозитории
-│       ├── CorpusRepository.py
-│       ├── TextRepository.py
-│       ├── graph_repository.py
-│       └── ontology_repository.py
-├── manage.py              # Django management script
-└── requirements.txt       # Зависимости
+├── backend.py          # Запуск бэкенда
+├── frontend.py         # Запуск фронтенда
+├── stop.py            # Остановка серверов
+├── config.env         # Конфигурация
+├── manage.py          # Django управление
+├── core/              # Настройки Django
+├── db/                # Модели и API
+│   ├── models.py      # Модели данных
+│   ├── views.py       # API endpoints
+│   ├── api/           # Репозитории
+│   └── templates/     # HTML шаблоны
+└── requirements.txt   # Зависимости
 ```
-
-## Модели данных
-
-### Corpus (Корпус)
-- `name` - название корпуса
-- `description` - описание
-- `genre` - жанр
-- `created_at` - дата создания
-- `updated_at` - дата обновления
-
-### Text (Текст)
-- `name` - название текста
-- `description` - описание
-- `text` - содержимое текста
-- `corpus` - связь с корпусом (ForeignKey)
-- `has_translation` - связь с переводом (Self-reference)
-- `created_at` - дата создания
-- `updated_at` - дата обновления
-
-## API Endpoints
-
-### Корпуса (Corpus)
-- `GET /api/corpus/` - получить все корпуса
-- `POST /api/corpus/create/` - создать корпус
-- `GET /api/corpus/get/?id={id}` - получить корпус по ID
-- `GET /api/corpus/get_with_texts/?id={id}` - получить корпус со всеми текстами
-- `PUT /api/corpus/update/?id={id}` - обновить корпус
-- `DELETE /api/corpus/delete/?id={id}` - удалить корпус
-
-### Тексты (Text)
-- `GET /api/text/` - получить все тексты
-- `POST /api/text/create/` - создать текст
-- `GET /api/text/get/?id={id}` - получить текст по ID
-- `GET /api/text/get_by_corpus/?corpus_id={id}` - получить тексты корпуса
-- `PUT /api/text/update/?id={id}` - обновить текст
-- `DELETE /api/text/delete/?id={id}` - удалить текст
-
-### Онтология (Ontology)
-- `GET /api/ontology/` - получить всю онтологию
-- `GET /api/ontology/parent_classes/` - получить корневые классы
-- `GET /api/ontology/class/?uri={uri}` - получить класс по URI
-- `POST /api/ontology/class/create/` - создать класс
-- `GET /api/ontology/signature/?uri={uri}` - собрать signature класса
-
-## Установка и запуск
-
-### 1. Установка зависимостей
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Настройка базы данных
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-### 3. Запуск сервера
-```bash
-python manage.py runserver
-```
-
-Сервер будет доступен по адресу: http://localhost:8000
-
-## Переменные окружения
-
-Создайте файл `.env` в корне проекта:
-
-```env
-NEO4J_URI=bolt://localhost:7687
-NEO4J_USER=neo4j
-NEO4J_PASSWORD=password
-NEO4J_DATABASE=ontology
-```
-
-## Примеры использования
-
-### Создание корпуса
-```bash
-curl -X POST "http://localhost:8000/api/corpus/create/" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Русская литература",
-    "description": "Корпус русской литературы",
-    "genre": "Художественная литература"
-  }'
-```
-
-### Создание текста
-```bash
-curl -X POST "http://localhost:8000/api/text/create/" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Евгений Онегин",
-    "description": "Роман в стихах",
-    "text": "Мой дядя самых честных правил...",
-    "corpus_id": 1
-  }'
-```
-
-### Получение корпуса со всеми текстами
-```bash
-curl -X GET "http://localhost:8000/api/corpus/get_with_texts/?id=1"
-```
-
-## Интеграция с Neo4j
-
-Проект интегрирует репозитории из предыдущих лабораторных работ:
-- `GraphRepository` - базовый функционал работы с Neo4j
-- `OntologyRepository` - работа с онтологиями
-
-## Технологии
-
-- **Django 4.2.7** - веб-фреймворк
-- **Django REST Framework 3.14.0** - REST API
-- **Neo4j 5.15.0** - графовая база данных
-- **SQLite** - реляционная база данных (по умолчанию)
-- **PostgreSQL** - поддерживается через psycopg2
-
-## Особенности реализации
-
-1. **Репозиторный паттерн** - вся бизнес-логика вынесена в репозитории
-2. **Типизация** - использование type hints для лучшей читаемости кода
-3. **Обработка ошибок** - корректная обработка исключений в API
-4. **Валидация данных** - проверка входных данных
-5. **CORS поддержка** - для работы с фронтендом
-6. **Интеграция Neo4j** - полная интеграция с графовой базой данных
-
-## Тестирование
-
-API протестировано с помощью curl команд. Все основные операции CRUD работают корректно.
-
-## Разработчик
-
-Senior Python Neo4j Developer с 15-летним опытом.

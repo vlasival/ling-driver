@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Скрипт для корректного запуска Django сервера с graceful shutdown
+Запуск бэкенда (API сервер)
 """
 
 import os
@@ -9,14 +9,17 @@ import signal
 import subprocess
 import time
 from pathlib import Path
+from dotenv import load_dotenv
 
-def signal_handler(sig, frame):
+# Загружаем переменные окружения
+load_dotenv('config.env')
+
+def signal_handler(sig, frame, port):
     """Обработчик сигналов для корректного завершения"""
-    print('\nПолучен сигнал завершения, останавливаем сервер...')
+    print('\nПолучен сигнал завершения, останавливаем бэкенд...')
     
-    # Находим и завершаем процесс Django сервера
     try:
-        result = subprocess.run(['lsof', '-ti:8000'], capture_output=True, text=True)
+        result = subprocess.run(['lsof', f'-ti:{port}'], capture_output=True, text=True)
         if result.stdout.strip():
             pids = result.stdout.strip().split('\n')
             for pid in pids:
@@ -24,20 +27,25 @@ def signal_handler(sig, frame):
                     print(f'Завершаем процесс {pid}')
                     subprocess.run(['kill', '-TERM', pid], check=False)
                     time.sleep(1)
-                    # Если процесс не завершился, принудительно
                     subprocess.run(['kill', '-9', pid], check=False)
     except Exception as e:
         print(f'Ошибка при завершении процессов: {e}')
     
-    print('Сервер корректно остановлен')
+    print('Бэкенд корректно остановлен')
     sys.exit(0)
 
 def main():
-    """Основная функция запуска сервера"""
+    """Основная функция запуска бэкенда"""
+    
+    # Получаем порт из переменных окружения
+    port = int(os.getenv('DJANGO_SERVER_PORT', 8000))
     
     # Устанавливаем обработчики сигналов
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
+    def handler(sig, frame):
+        signal_handler(sig, frame, port)
+    
+    signal.signal(signal.SIGINT, handler)
+    signal.signal(signal.SIGTERM, handler)
     
     # Проверяем, что мы в правильной директории
     if not Path('manage.py').exists():
@@ -46,9 +54,9 @@ def main():
     
     # Проверяем, свободен ли порт
     try:
-        result = subprocess.run(['lsof', '-ti:8000'], capture_output=True, text=True)
+        result = subprocess.run(['lsof', f'-ti:{port}'], capture_output=True, text=True)
         if result.stdout.strip():
-            print('Порт 8000 занят, освобождаем...')
+            print(f'Порт {port} занят, освобождаем...')
             pids = result.stdout.strip().split('\n')
             for pid in pids:
                 if pid:
@@ -57,14 +65,14 @@ def main():
     except Exception:
         pass
     
-    print('Запускаем Django сервер на порту 8000...')
+    print(f'Запускаем бэкенд (API сервер) на порту {port}...')
     print('Для остановки используйте Ctrl+C')
     print('=' * 50)
     
     try:
         # Запускаем Django сервер
         process = subprocess.Popen([
-            sys.executable, 'manage.py', 'runserver', '8000'
+            sys.executable, 'manage.py', 'runserver', str(port)
         ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
         
         # Выводим логи в реальном времени
@@ -74,11 +82,11 @@ def main():
     except KeyboardInterrupt:
         print('\nПолучен сигнал прерывания')
     except Exception as e:
-        print(f'Ошибка запуска сервера: {e}')
+        print(f'Ошибка запуска бэкенда: {e}')
     finally:
         # Корректно завершаем процесс
         if 'process' in locals():
-            print('Завершаем процесс сервера...')
+            print('Завершаем процесс бэкенда...')
             process.terminate()
             try:
                 process.wait(timeout=5)
@@ -88,7 +96,7 @@ def main():
         
         # Дополнительная очистка порта
         try:
-            result = subprocess.run(['lsof', '-ti:8000'], capture_output=True, text=True)
+            result = subprocess.run(['lsof', f'-ti:{port}'], capture_output=True, text=True)
             if result.stdout.strip():
                 pids = result.stdout.strip().split('\n')
                 for pid in pids:
@@ -97,7 +105,8 @@ def main():
         except Exception:
             pass
         
-        print('Сервер корректно остановлен, порт освобожден')
+        print('Бэкенд корректно остановлен, порт освобожден')
 
 if __name__ == '__main__':
     main()
+

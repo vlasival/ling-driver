@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 """
-Скрипт для корректной остановки Django сервера
+Остановка всех серверов
 """
 
 import subprocess
 import sys
 import time
+import os
+from dotenv import load_dotenv
 
-def stop_server(port=8000):
-    """Корректно останавливает Django сервер"""
+# Загружаем переменные окружения
+load_dotenv('config.env')
+
+def stop_server(port):
+    """Корректно останавливает сервер на указанном порту"""
     
-    print(f'Останавливаем Django сервер на порту {port}...')
+    print(f'Останавливаем сервер на порту {port}...')
     
     try:
         # Находим процессы на указанном порту
@@ -21,7 +26,6 @@ def stop_server(port=8000):
             return True
         
         pids = result.stdout.strip().split('\n')
-        stopped_count = 0
         
         for pid in pids:
             if pid:
@@ -39,7 +43,6 @@ def stop_server(port=8000):
                         print(f'Принудительно завершаем процесс {pid}...')
                         subprocess.run(['kill', '-9', pid], check=True)
                     
-                    stopped_count += 1
                     print(f'Процесс {pid} завершен')
                     
                 except subprocess.CalledProcessError as e:
@@ -50,30 +53,31 @@ def stop_server(port=8000):
         final_check = subprocess.run(['lsof', f'-ti:{port}'], capture_output=True, text=True)
         
         if not final_check.stdout.strip():
-            print(f'Сервер успешно остановлен, порт {port} освобожден')
+            print(f'Сервер на порту {port} успешно остановлен')
             return True
         else:
             print(f'Порт {port} все еще занят')
             return False
             
     except Exception as e:
-        print(f'Ошибка при остановке сервера: {e}')
+        print(f'Ошибка при остановке сервера на порту {port}: {e}')
         return False
 
 def main():
     """Основная функция"""
     
-    if len(sys.argv) > 1:
-        try:
-            port = int(sys.argv[1])
-        except ValueError:
-            print('Неверный номер порта')
-            sys.exit(1)
-    else:
-        port = 8000
+    print('Останавливаем все серверы...')
     
-    success = stop_server(port)
-    sys.exit(0 if success else 1)
+    # Останавливаем бэкенд
+    backend_port = int(os.getenv('DJANGO_SERVER_PORT', 8000))
+    stop_server(backend_port)
+    
+    # Останавливаем фронтенд
+    frontend_port = int(os.getenv('WEB_INTERFACE_PORT', 8001))
+    stop_server(frontend_port)
+    
+    print('Все серверы остановлены')
 
 if __name__ == '__main__':
     main()
+
